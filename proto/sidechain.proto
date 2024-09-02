@@ -4,8 +4,11 @@ package Sidechain;
 service Sidechain {
   rpc SubmitTransaction(SubmitTransactionRequest)
       returns (SubmitTransactionResponse);
+  rpc GetNextBlock(GetNextBlockRequest) returns (GetNextBlockResponse);
 }
 
 message SubmitTransactionRequest { bytes transaction = 1; }
-
 message SubmitTransactionResponse {}
+
+message GetNextBlockRequest {}
+message GetNextBlockResponse { bytes block = 1; }
