@@ -2,6 +2,10 @@ syntax = "proto3";
 package Sidechain;
 
 service Sidechain {
+  rpc ConnectMainBlock(ConnectMainBlockRequest)
+      returns (ConnectMainBlockResponse);
+  rpc DisconnectMainBlock(DisconnectMainBlockRequest)
+      returns (DisconnectMainBlockResponse);
   rpc SubmitTransaction(SubmitTransactionRequest)
       returns (SubmitTransactionResponse);
   rpc GetNextBlock(GetNextBlockRequest) returns (GetNextBlockResponse);
@@ -12,3 +16,33 @@ message SubmitTransactionResponse {}
 
 message GetNextBlockRequest {}
 message GetNextBlockResponse { bytes block = 1; }
+
+message Deposit {
+  bytes address = 1;
+  uint64 value = 2;
+}
+
+enum WithdrawalBundleEventType {
+  Submitted = 0;
+  Failed = 1;
+  Succeded = 2;
+}
+
+message WithdrawalBundleEvent {
+  bytes m6id = 1;
+  WithdrawalBundleEventType withdrawal_bundle_event_type = 2;
+}
+
+message ConnectMainBlockRequest {
+  repeated Deposit deposits = 1;
+  optional WithdrawalBundleEvent withdrawal_bundle_event = 2;
+  repeated bytes bmm_hashes = 3;
+}
+message ConnectMainBlockResponse {}
+
+message DisconnectMainBlockRequest {
+  repeated Deposit deposits = 1;
+  optional WithdrawalBundleEvent withdrawal_bundle_event = 2;
+  repeated bytes bmm_hashes = 3;
+}
+message DisconnectMainBlockResponse {}
