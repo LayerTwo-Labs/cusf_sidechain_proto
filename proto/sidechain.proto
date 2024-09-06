@@ -18,8 +18,9 @@ message GetNextBlockRequest {}
 message GetNextBlockResponse { bytes block = 1; }
 
 message Deposit {
-  bytes address = 1;
-  uint64 value = 2;
+  uint64 sequence_number = 1;
+  bytes address = 2;
+  uint64 value = 3;
 }
 
 enum WithdrawalBundleEventType {
