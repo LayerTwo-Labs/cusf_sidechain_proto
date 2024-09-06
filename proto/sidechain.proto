@@ -10,6 +10,7 @@ service Sidechain {
       returns (SubmitTransactionResponse);
   rpc CollectTransactions(CollectTransactionsRequest)
       returns (CollectTransactionsResponse);
+  rpc GetChainTip(GetChainTipRequest) returns (GetChainTipResponse);
 }
 
 message SubmitTransactionRequest { bytes transaction = 1; }
@@ -17,6 +18,12 @@ message SubmitTransactionResponse {}
 
 message CollectTransactionsRequest {}
 message CollectTransactionsResponse { bytes transactions = 1; }
+
+message GetChainTipRequest {}
+message GetChainTipResponse {
+  uint32 block_height = 1;
+  bytes block_hash = 2;
+}
 
 message Deposit {
   uint64 sequence_number = 1;
