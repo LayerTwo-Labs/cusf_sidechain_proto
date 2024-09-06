@@ -6,6 +6,7 @@ service Sidechain {
       returns (ConnectMainBlockResponse);
   rpc DisconnectMainBlock(DisconnectMainBlockRequest)
       returns (DisconnectMainBlockResponse);
+  rpc SubmitBlock(SubmitBlockRequest) returns (SubmitBlockResponse);
   rpc SubmitTransaction(SubmitTransactionRequest)
       returns (SubmitTransactionResponse);
   rpc CollectTransactions(CollectTransactionsRequest)
@@ -15,6 +16,9 @@ service Sidechain {
 
 message SubmitTransactionRequest { bytes transaction = 1; }
 message SubmitTransactionResponse {}
+
+message SubmitBlockRequest { bytes block = 1; }
+message SubmitBlockResponse {}
 
 message CollectTransactionsRequest {}
 message CollectTransactionsResponse { bytes transactions = 1; }
