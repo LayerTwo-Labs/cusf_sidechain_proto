@@ -8,14 +8,15 @@ service Sidechain {
       returns (DisconnectMainBlockResponse);
   rpc SubmitTransaction(SubmitTransactionRequest)
       returns (SubmitTransactionResponse);
-  rpc GetNextBlock(GetNextBlockRequest) returns (GetNextBlockResponse);
+  rpc CollectTransactions(CollectTransactionsRequest)
+      returns (CollectTransactionsResponse);
 }
 
 message SubmitTransactionRequest { bytes transaction = 1; }
 message SubmitTransactionResponse {}
 
-message GetNextBlockRequest {}
-message GetNextBlockResponse { bytes block = 1; }
+message CollectTransactionsRequest {}
+message CollectTransactionsResponse { bytes transactions = 1; }
 
 message Deposit {
   uint64 sequence_number = 1;
