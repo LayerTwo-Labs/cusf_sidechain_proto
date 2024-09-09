@@ -50,6 +50,8 @@ message ConnectMainBlockRequest {
   repeated Deposit deposits = 1;
   optional WithdrawalBundleEvent withdrawal_bundle_event = 2;
   repeated bytes bmm_hashes = 3;
+  uint32 block_height = 4;
+  bytes block_hash = 5;
 }
 message ConnectMainBlockResponse {}
 
