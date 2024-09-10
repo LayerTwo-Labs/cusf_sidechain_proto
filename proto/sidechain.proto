@@ -12,6 +12,7 @@ service Sidechain {
   rpc CollectTransactions(CollectTransactionsRequest)
       returns (CollectTransactionsResponse);
   rpc GetChainTip(GetChainTipRequest) returns (GetChainTipResponse);
+  rpc GetUtxoSet(GetUtxoSetRequest) returns (GetUtxoSetResponse);
 }
 
 message SubmitTransactionRequest { bytes transaction = 1; }
@@ -61,3 +62,6 @@ message DisconnectMainBlockRequest {
   repeated bytes bmm_hashes = 3;
 }
 message DisconnectMainBlockResponse {}
+
+message GetUtxoSetRequest {}
+message GetUtxoSetResponse { bytes utxos = 1; }
