@@ -13,6 +13,8 @@ service Sidechain {
       returns (CollectTransactionsResponse);
   rpc GetChainTip(GetChainTipRequest) returns (GetChainTipResponse);
   rpc GetUtxoSet(GetUtxoSetRequest) returns (GetUtxoSetResponse);
+  rpc GetWithdrawalBundle(GetWithdrawalBundleRequest)
+      returns (GetWithdrawalBundleResponse);
 }
 
 message SubmitTransactionRequest { bytes transaction = 1; }
@@ -65,3 +67,6 @@ message DisconnectMainBlockResponse {}
 
 message GetUtxoSetRequest {}
 message GetUtxoSetResponse { bytes utxos = 1; }
+
+message GetWithdrawalBundleRequest {}
+message GetWithdrawalBundleResponse { bytes bundle = 1; }
