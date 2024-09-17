@@ -15,6 +15,8 @@ service Sidechain {
   rpc GetUtxoSet(GetUtxoSetRequest) returns (GetUtxoSetResponse);
   rpc GetWithdrawalBundle(GetWithdrawalBundleRequest)
       returns (GetWithdrawalBundleResponse);
+  
+  rpc SubscribeEvents(SubscribeEventsRequest) returns (stream EventResponse);
 }
 
 message SubmitTransactionRequest {
@@ -59,12 +61,16 @@ message WithdrawalBundleEvent {
   WithdrawalBundleEventType withdrawal_bundle_event_type = 2;
 }
 
-message ConnectMainBlockRequest {
+message MainBlockInfo {
   repeated Deposit deposits = 1;
   optional WithdrawalBundleEvent withdrawal_bundle_event = 2;
   repeated bytes bmm_hashes = 3;
   uint32 block_height = 4;
   bytes block_hash = 5;
+  bytes prev_block_hash = 6;
+}
+message ConnectMainBlockRequest {
+  MainBlockInfo main_block_info = 1;
 }
 message ConnectMainBlockResponse {
 }
@@ -87,4 +93,18 @@ message GetWithdrawalBundleRequest {
 }
 message GetWithdrawalBundleResponse {
   bytes bundle = 1;
+}
+
+message SubscribeEventsRequest {
+}
+message ConnectMainBlockEvent {
+  MainBlockInfo main_block_info = 1;
+}
+message Event {
+  oneof event {
+    ConnectMainBlockEvent connect_block = 1;
+  }
+}
+message EventResponse {
+  Event event = 1;
 }
