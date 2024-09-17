@@ -1,5 +1,5 @@
 syntax = "proto3";
-package Sidechain;
+package sidechain;
 
 service Sidechain {
   rpc ConnectMainBlock(ConnectMainBlockRequest)
@@ -17,16 +17,26 @@ service Sidechain {
       returns (GetWithdrawalBundleResponse);
 }
 
-message SubmitTransactionRequest { bytes transaction = 1; }
-message SubmitTransactionResponse {}
+message SubmitTransactionRequest {
+  bytes transaction = 1;
+}
+message SubmitTransactionResponse {
+}
 
-message SubmitBlockRequest { bytes block = 1; }
-message SubmitBlockResponse {}
+message SubmitBlockRequest {
+  bytes block = 1;
+}
+message SubmitBlockResponse {
+}
 
-message CollectTransactionsRequest {}
-message CollectTransactionsResponse { bytes transactions = 1; }
+message CollectTransactionsRequest {
+}
+message CollectTransactionsResponse {
+  bytes transactions = 1;
+}
 
-message GetChainTipRequest {}
+message GetChainTipRequest {
+}
 message GetChainTipResponse {
   uint32 block_height = 1;
   bytes block_hash = 2;
@@ -39,9 +49,9 @@ message Deposit {
 }
 
 enum WithdrawalBundleEventType {
-  Submitted = 0;
-  Failed = 1;
-  Succeded = 2;
+  WITHDRAWAL_BUNDLE_EVENT_TYPE_SUBMITTED_UNSPECIFIED = 0;
+  WITHDRAWAL_BUNDLE_EVENT_TYPE_FAILED = 1;
+  WITHDRAWAL_BUNDLE_EVENT_TYPE_SUCCEDED = 2;
 }
 
 message WithdrawalBundleEvent {
@@ -56,17 +66,25 @@ message ConnectMainBlockRequest {
   uint32 block_height = 4;
   bytes block_hash = 5;
 }
-message ConnectMainBlockResponse {}
+message ConnectMainBlockResponse {
+}
 
 message DisconnectMainBlockRequest {
   repeated Deposit deposits = 1;
   optional WithdrawalBundleEvent withdrawal_bundle_event = 2;
   repeated bytes bmm_hashes = 3;
 }
-message DisconnectMainBlockResponse {}
+message DisconnectMainBlockResponse {
+}
 
-message GetUtxoSetRequest {}
-message GetUtxoSetResponse { bytes utxos = 1; }
+message GetUtxoSetRequest {
+}
+message GetUtxoSetResponse {
+  bytes utxos = 1;
+}
 
-message GetWithdrawalBundleRequest {}
-message GetWithdrawalBundleResponse { bytes bundle = 1; }
+message GetWithdrawalBundleRequest {
+}
+message GetWithdrawalBundleResponse {
+  bytes bundle = 1;
+}
