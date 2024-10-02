@@ -63,13 +63,6 @@ message BlockInfo {
   optional bytes bmm_commitment = 3;
 }
 
-enum AckBundlesTag {
-  ACK_BUNDLES_TAG_UNSPECIFIED = 0;
-  ACK_BUNDLES_TAG_REPEAT_PREVIOUS = 1;
-  ACK_BUNDLES_TAG_LEADING_BY_50 = 2;
-  ACK_BUNDLES_TAG_UPVOTES = 3;
-}
-
 service MainchainService {
   rpc BroadcastWithdrawalBundle(BroadcastWithdrawalBundleRequest)
     returns (BroadcastWithdrawalBundleResponse);
@@ -201,10 +194,19 @@ message GetCoinbasePSBTRequest {
     google.protobuf.BytesValue bundle_txid = 2;
   }
   message AckBundles {
-    AckBundlesTag tag = 1;
-    repeated uint32 upvotes = 2;
+    message RepeatPrevious {
+    }
+    message LeadingBy50 {
+    }
+    message Upvotes {
+      repeated uint32 upvotes = 1;
+    }
+    oneof ack_bundles {
+      RepeatPrevious repeat_previous = 1;
+      LeadingBy50 leading_by_50 = 2;
+      Upvotes upvotes = 3;
+    }
   }
-
 
   repeated ProposeSidechain propose_sidechains = 1;
   repeated AckSidechain ack_sidechains = 2;
