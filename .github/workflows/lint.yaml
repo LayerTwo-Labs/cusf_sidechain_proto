@@ -14,3 +14,10 @@ jobs:
           configDirectory: .
           srcDirectory: proto
 
+      - name: Install buf
+        uses: bufbuild/buf-action@v1
+        with:
+          setup_only: true
+      
+      - name: Buf lint
+        run: buf lint --error-format github-actions

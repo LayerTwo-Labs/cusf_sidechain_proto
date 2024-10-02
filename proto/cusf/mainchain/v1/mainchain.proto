@@ -1,7 +1,7 @@
 /* CUSF mainchain node service */
 
 syntax = "proto3";
-package cusf.mainchain;
+package cusf.mainchain.v1;
 
 enum AddressType {
   ADDRESS_TYPE_UNSPECIFIED = 0;
@@ -61,7 +61,7 @@ message BlockInfo {
   optional bytes bmm_commitment = 3;
 }
 
-service Mainchain {
+service MainchainService {
   rpc BroadcastWithdrawalBundle(BroadcastWithdrawalBundleRequest)
     returns (BroadcastWithdrawalBundleResponse);
   rpc CreateBmmCriticalDataTransaction(CreateBmmCriticalDataTransactionRequest)
@@ -82,7 +82,8 @@ service Mainchain {
   rpc GetChainTip(GetChainTipRequest) returns (GetChainTipResponse);
   rpc GetTwoWayPegData(GetTwoWayPegDataRequest)
     returns (GetTwoWayPegDataResponse);
-  rpc SubscribeEvents(SubscribeEventsRequest) returns (stream EventResponse);
+  rpc SubscribeEvents(SubscribeEventsRequest)
+    returns (stream SubscribeEventsResponse);
 }
 
 message BroadcastWithdrawalBundleRequest {
@@ -188,7 +189,7 @@ message GetTwoWayPegDataResponse {
 message SubscribeEventsRequest {
   uint32 sidechain_id = 1;
 }
-message EventResponse {
+message SubscribeEventsResponse {
   message Event {
     message ConnectBlock {
       BlockHeaderInfo header_info = 1;

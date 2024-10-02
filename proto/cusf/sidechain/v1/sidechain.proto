@@ -1,7 +1,7 @@
 /* CUSF sidechain node service */
 
 syntax = "proto3";
-package cusf.sidechain;
+package cusf.sidechain.v1;
 
 message SequenceId {
   uint64 sequence_id = 1;
@@ -14,12 +14,16 @@ message BlockHeaderInfo {
   uint32 height = 4;
 }
 
-service Sidechain {
+message BlockInfo {
+}
+
+service SidechainService {
   rpc GetMempoolTxs(GetMempoolTxsRequest) returns (GetMempoolTxsResponse);
   rpc GetUtxos(GetUtxosRequest) returns (GetUtxosResponse);
   rpc SubmitTransaction(SubmitTransactionRequest)
     returns (SubmitTransactionResponse);
-  rpc SubscribeEvents(SubscribeEventsRequest) returns (stream EventResponse);
+  rpc SubscribeEvents(SubscribeEventsRequest)
+    returns (stream SubscribeEventsResponse);
 }
 
 message GetMempoolTxsRequest {
@@ -30,8 +34,7 @@ message GetMempoolTxsResponse {
 
 message GetUtxosRequest {
 }
-message GetMempoolTxsResponse {
-  SequenceId sequence_id = 1;
+message GetUtxosResponse {
 }
 
 message SubmitTransactionRequest {
@@ -42,7 +45,7 @@ message SubmitTransactionResponse {
 
 message SubscribeEventsRequest {
 }
-message EventResponse {
+message SubscribeEventsResponse {
   message Event {
     message ConnectBlock {
       BlockHeaderInfo header_info = 1;
