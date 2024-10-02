@@ -3,6 +3,8 @@
 syntax = "proto3";
 package cusf.mainchain.v1;
 
+import "google/protobuf/wrappers.proto";
+
 enum AddressType {
   ADDRESS_TYPE_UNSPECIFIED = 0;
   ADDRESS_TYPE_DEFAULT = 1;
@@ -61,6 +63,13 @@ message BlockInfo {
   optional bytes bmm_commitment = 3;
 }
 
+enum AckBundlesTag {
+  ACK_BUNDLES_TAG_UNSPECIFIED = 0;
+  ACK_BUNDLES_TAG_REPEAT_PREVIOUS = 1;
+  ACK_BUNDLES_TAG_LEADING_BY_50 = 2;
+  ACK_BUNDLES_TAG_UPVOTES = 3;
+}
+
 service MainchainService {
   rpc BroadcastWithdrawalBundle(BroadcastWithdrawalBundleRequest)
     returns (BroadcastWithdrawalBundleResponse);
@@ -80,6 +89,11 @@ service MainchainService {
     returns (GetBmmHStarCommitmentsResponse);
   rpc GetChainInfo(GetChainInfoRequest) returns (GetChainInfoResponse);
   rpc GetChainTip(GetChainTipRequest) returns (GetChainTipResponse);
+  rpc GetCoinbasePSBT(GetCoinbasePSBTRequest) returns (GetCoinbasePSBTResponse);
+  rpc GetCtip(GetCtipRequest) returns (GetCtipResponse);
+  rpc GetSidechainProposals(GetSidechainProposalsRequest)
+      returns (GetSidechainProposalsResponse);
+  rpc GetSidechains(GetSidechainsRequest) returns (GetSidechainsResponse);
   rpc GetTwoWayPegData(GetTwoWayPegDataRequest)
     returns (GetTwoWayPegDataResponse);
   rpc SubscribeEvents(SubscribeEventsRequest)
@@ -87,18 +101,18 @@ service MainchainService {
 }
 
 message BroadcastWithdrawalBundleRequest {
-  uint32 sidechain_id = 1;
-  bytes transaction = 2;
+  google.protobuf.UInt32Value sidechain_id = 1;
+  google.protobuf.BytesValue transaction = 2;
 }
 message BroadcastWithdrawalBundleResponse {
 }
 
 message CreateBmmCriticalDataTransactionRequest {
-  uint32 sidechain_id = 1;
-  uint64 value_sats = 2;
-  uint32 height = 3;
-  bytes critical_hash = 4;
-  bytes prev_bytes = 5;
+  google.protobuf.UInt32Value sidechain_id = 1;
+  google.protobuf.UInt64Value value_sats = 2;
+  google.protobuf.UInt32Value height = 3;
+  google.protobuf.BytesValue critical_hash = 4;
+  google.protobuf.BytesValue prev_bytes = 5;
 }
 message CreateBmmCriticalDataTransactionResponse {
   bytes txid = 1;
@@ -123,21 +137,21 @@ message CreateNewAddressResponse {
 }
 
 message GenerateBlocksRequest {
-  uint32 blocks = 1;
+  google.protobuf.UInt32Value blocks = 1;
 }
 message GenerateBlocksResponse {
 }
 
 message GetBlockHeaderInfoRequest {
-  bytes block_hash = 1;
+  google.protobuf.BytesValue block_hash = 1;
 }
 message GetBlockHeaderInfoResponse {
   BlockHeaderInfo header_info = 1;
 }
 
 message GetBlockInfoRequest {
-  bytes block_hash = 1;
-  uint32 sidechain_id = 2;
+  google.protobuf.BytesValue block_hash = 1;
+  google.protobuf.UInt32Value sidechain_id = 2;
 }
 message GetBlockInfoResponse {
   BlockHeaderInfo header_info = 1;
@@ -145,8 +159,8 @@ message GetBlockInfoResponse {
 }
 
 message GetBmmHStarCommitmentsRequest {
-  bytes block_hash = 1;
-  uint32 sidechain_id = 2;
+  google.protobuf.BytesValue block_hash = 1;
+  google.protobuf.UInt32Value sidechain_id = 2;
 }
 message GetBmmHStarCommitmentsResponse {
   message BlockNotFoundError {
@@ -173,10 +187,78 @@ message GetChainTipResponse {
   BlockHeaderInfo block_header_info = 1;
 }
 
+message GetCoinbasePSBTRequest {
+  message ProposeSidechain {
+    google.protobuf.UInt32Value sidechain_number = 1;
+    google.protobuf.BytesValue data = 2;
+  }
+  message AckSidechain {
+    google.protobuf.UInt32Value sidechain_number = 1;
+    google.protobuf.BytesValue data_hash = 2;
+  }
+  message ProposeBundle {
+    google.protobuf.UInt32Value sidechain_number = 1;
+    google.protobuf.BytesValue bundle_txid = 2;
+  }
+  message AckBundles {
+    AckBundlesTag tag = 1;
+    repeated uint32 upvotes = 2;
+  }
+
+
+  repeated ProposeSidechain propose_sidechains = 1;
+  repeated AckSidechain ack_sidechains = 2;
+  repeated ProposeBundle propose_bundles = 3;
+  AckBundles ack_bundles = 4;
+}
+message GetCoinbasePSBTResponse {
+  bytes psbt = 1;
+}
+
+message GetCtipRequest {
+  google.protobuf.UInt32Value sidechain_number = 1;
+}
+message GetCtipResponse {
+  message Ctip {
+    bytes txid = 1;
+    uint32 vout = 2;
+    uint64 value = 3;
+    uint64 sequence_number = 4;
+  }
+  optional Ctip ctip = 1;
+}
+
+message GetSidechainProposalsRequest {
+}
+message GetSidechainProposalsResponse {
+  message SidechainProposal {
+    uint32 sidechain_number = 1;
+    bytes data = 2;
+    bytes data_hash = 3;
+    uint32 vote_count = 4;
+    uint32 proposal_height = 5;
+    uint32 proposal_age = 6;
+  }
+  repeated SidechainProposal sidechain_proposals = 1;
+}
+
+message GetSidechainsRequest {
+}
+message GetSidechainsResponse {
+  message SidechainInfo {
+    uint32 sidechain_number = 1;
+    bytes data = 2;
+    uint32 vote_count = 3;
+    uint32 proposal_height = 4;
+    uint32 activation_height = 5;
+  }
+  repeated SidechainInfo sidechains = 1;
+}
+
 message GetTwoWayPegDataRequest {
-  uint32 sidechain_id = 1;
+  google.protobuf.UInt32Value sidechain_id = 1;
   optional bytes start_block_hash = 2;
-  bytes end_block_hash = 3;
+  google.protobuf.BytesValue end_block_hash = 3;
 }
 message GetTwoWayPegDataResponse {
   message ResponseItem {
@@ -187,7 +269,7 @@ message GetTwoWayPegDataResponse {
 }
 
 message SubscribeEventsRequest {
-  uint32 sidechain_id = 1;
+  google.protobuf.UInt32Value sidechain_id = 1;
 }
 message SubscribeEventsResponse {
   message Event {
