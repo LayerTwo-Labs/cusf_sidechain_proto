@@ -60,7 +60,7 @@ message WithdrawalBundleEvent {
 // Specific to an individual sidechain slot
 message BlockInfo {
   repeated Deposit deposits = 1;
-  optional WithdrawalBundleEvent withdrawal_bundle_event = 2;
+  repeated WithdrawalBundleEvent withdrawal_bundle_events = 2;
   optional bytes bmm_commitment = 3;
 }
 
