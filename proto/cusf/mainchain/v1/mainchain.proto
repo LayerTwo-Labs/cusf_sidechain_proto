@@ -79,8 +79,8 @@ service MainchainService {
   rpc GetBlockHeaderInfo(GetBlockHeaderInfoRequest)
     returns (GetBlockHeaderInfoResponse);
   rpc GetBlockInfo(GetBlockInfoRequest) returns (GetBlockInfoResponse);
-  rpc GetBmmHStarCommitments(GetBmmHStarCommitmentsRequest)
-    returns (GetBmmHStarCommitmentsResponse);
+  rpc GetBmmHStarCommitment(GetBmmHStarCommitmentRequest)
+    returns (GetBmmHStarCommitmentResponse);
   rpc GetChainInfo(GetChainInfoRequest) returns (GetChainInfoResponse);
   rpc GetChainTip(GetChainTipRequest) returns (GetChainTipResponse);
   rpc GetCoinbasePSBT(GetCoinbasePSBTRequest) returns (GetCoinbasePSBTResponse);
@@ -152,20 +152,20 @@ message GetBlockInfoResponse {
   BlockInfo block_info = 2;
 }
 
-message GetBmmHStarCommitmentsRequest {
+message GetBmmHStarCommitmentRequest {
   google.protobuf.BytesValue block_hash = 1;
   google.protobuf.UInt32Value sidechain_id = 2;
 }
-message GetBmmHStarCommitmentsResponse {
+message GetBmmHStarCommitmentResponse {
   message BlockNotFoundError {
     bytes block_hash = 1;
   }
-  message Commitments {
-    repeated bytes commitments = 1;
+  message Commitment {
+    optional bytes commitment = 1;
   }
   oneof result {
     BlockNotFoundError block_not_found = 1;
-    Commitments commitments = 2;
+    Commitment commitment = 2;
   }
 }
 
