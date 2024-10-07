@@ -1,7 +1,7 @@
-/* CUSF mainchain node service */
+/* CUSF mainchain validator service */
 
 syntax = "proto3";
-package cusf.mainchain.v1;
+package cusf.validator.v1;
 
 import "google/protobuf/wrappers.proto";
 
@@ -65,7 +65,7 @@ message BlockInfo {
   optional bytes bmm_commitment = 3;
 }
 
-service MainchainService {
+service ValidatorService {
   rpc BroadcastWithdrawalBundle(BroadcastWithdrawalBundleRequest)
     returns (BroadcastWithdrawalBundleResponse);
   rpc CreateBmmCriticalDataTransaction(CreateBmmCriticalDataTransactionRequest)
