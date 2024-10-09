@@ -1,24 +1,18 @@
 /* CUSF mainchain validator service */
 
 syntax = "proto3";
-package cusf.validator.v1;
+package cusf.mainchain.v1;
 
 import "google/protobuf/wrappers.proto";
 
-enum AddressType {
-  ADDRESS_TYPE_UNSPECIFIED = 0;
-  ADDRESS_TYPE_DEFAULT = 1;
-  ADDRESS_TYPE_BECH32 = 2;
-  ADDRESS_TYPE_LEGACY = 3;
-  ADDRESS_TYPE_P2SH_SEGWIT = 4;
-}
+import "cusf/mainchain/v1/common.proto";
 
 message BlockHeaderInfo {
-  bytes block_hash = 1;
-  bytes prev_block_hash = 2;
+  ReverseHex block_hash = 1;
+  ReverseHex prev_block_hash = 2;
   uint32 height = 3;
   // Total work as a uint256, little-endian
-  bytes work = 4;
+  ConsensusHex work = 4;
 }
 
 enum Network {
@@ -31,12 +25,12 @@ enum Network {
 }
 
 message OutPoint {
-  bytes txid = 1;
+  ConsensusHex txid = 1;
   uint32 vout = 2;
 }
 
 message Output {
-  bytes address = 2;
+  ConsensusHex address = 2;
   uint64 value_sats = 3;
 }
 
@@ -54,7 +48,7 @@ enum WithdrawalBundleEventType {
 }
 
 message WithdrawalBundleEvent {
-  bytes m6id = 1;
+  ConsensusHex m6id = 1;
   WithdrawalBundleEventType withdrawal_bundle_event_type = 2;
 }
 
@@ -62,21 +56,10 @@ message WithdrawalBundleEvent {
 message BlockInfo {
   repeated Deposit deposits = 1;
   repeated WithdrawalBundleEvent withdrawal_bundle_events = 2;
-  optional bytes bmm_commitment = 3;
+  optional ConsensusHex bmm_commitment = 3;
 }
 
 service ValidatorService {
-  rpc BroadcastWithdrawalBundle(BroadcastWithdrawalBundleRequest)
-    returns (BroadcastWithdrawalBundleResponse);
-  rpc CreateBmmCriticalDataTransaction(CreateBmmCriticalDataTransactionRequest)
-    returns (CreateBmmCriticalDataTransactionResponse);
-  rpc CreateDepositTransaction(CreateDepositTransactionRequest)
-    returns (CreateDepositTransactionResponse);
-  rpc CreateNewAddress(CreateNewAddressRequest)
-    returns (CreateNewAddressResponse);
-  // Regtest only
-  rpc GenerateBlocks(GenerateBlocksRequest)
-    returns (GenerateBlocksResponse);
   rpc GetBlockHeaderInfo(GetBlockHeaderInfoRequest)
     returns (GetBlockHeaderInfoResponse);
   rpc GetBlockInfo(GetBlockInfoRequest) returns (GetBlockInfoResponse);
@@ -95,57 +78,15 @@ service ValidatorService {
     returns (stream SubscribeEventsResponse);
 }
 
-message BroadcastWithdrawalBundleRequest {
-  google.protobuf.UInt32Value sidechain_id = 1;
-  google.protobuf.BytesValue transaction = 2;
-}
-message BroadcastWithdrawalBundleResponse {
-}
-
-message CreateBmmCriticalDataTransactionRequest {
-  google.protobuf.UInt32Value sidechain_id = 1;
-  google.protobuf.UInt64Value value_sats = 2;
-  google.protobuf.UInt32Value height = 3;
-  google.protobuf.BytesValue critical_hash = 4;
-  google.protobuf.BytesValue prev_bytes = 5;
-}
-message CreateBmmCriticalDataTransactionResponse {
-  bytes txid = 1;
-}
-
-message CreateDepositTransactionRequest {
-  uint32 sidechain_id = 1;
-  string address = 2;
-  uint64 value_sats = 3;
-  uint64 fee_sats = 4;
-}
-message CreateDepositTransactionResponse {
-  bytes txid = 1;
-}
-
-message CreateNewAddressRequest {
-  optional string label = 1;
-  AddressType address_type = 2;
-}
-message CreateNewAddressResponse {
-  string address = 1;
-}
-
-message GenerateBlocksRequest {
-  google.protobuf.UInt32Value blocks = 1;
-}
-message GenerateBlocksResponse {
-}
-
 message GetBlockHeaderInfoRequest {
-  google.protobuf.BytesValue block_hash = 1;
+  ReverseHex block_hash = 1;
 }
 message GetBlockHeaderInfoResponse {
   BlockHeaderInfo header_info = 1;
 }
 
 message GetBlockInfoRequest {
-  google.protobuf.BytesValue block_hash = 1;
+  ReverseHex block_hash = 1;
   google.protobuf.UInt32Value sidechain_id = 2;
 }
 message GetBlockInfoResponse {
@@ -154,15 +95,15 @@ message GetBlockInfoResponse {
 }
 
 message GetBmmHStarCommitmentRequest {
-  google.protobuf.BytesValue block_hash = 1;
+  ReverseHex block_hash = 1;
   google.protobuf.UInt32Value sidechain_id = 2;
 }
 message GetBmmHStarCommitmentResponse {
   message BlockNotFoundError {
-    bytes block_hash = 1;
+    ReverseHex block_hash = 1;
   }
   message Commitment {
-    optional bytes commitment = 1;
+    optional ConsensusHex commitment = 1;
   }
   oneof result {
     BlockNotFoundError block_not_found = 1;
@@ -185,15 +126,15 @@ message GetChainTipResponse {
 message GetCoinbasePSBTRequest {
   message ProposeSidechain {
     google.protobuf.UInt32Value sidechain_number = 1;
-    google.protobuf.BytesValue data = 2;
+    ConsensusHex data = 2;
   }
   message AckSidechain {
     google.protobuf.UInt32Value sidechain_number = 1;
-    google.protobuf.BytesValue data_hash = 2;
+    ConsensusHex data_hash = 2;
   }
   message ProposeBundle {
     google.protobuf.UInt32Value sidechain_number = 1;
-    google.protobuf.BytesValue bundle_txid = 2;
+    ConsensusHex bundle_txid = 2;
   }
   message AckBundles {
     message RepeatPrevious {
@@ -216,7 +157,7 @@ message GetCoinbasePSBTRequest {
   AckBundles ack_bundles = 4;
 }
 message GetCoinbasePSBTResponse {
-  bytes psbt = 1;
+  ConsensusHex psbt = 1;
 }
 
 message GetCtipRequest {
@@ -224,7 +165,7 @@ message GetCtipRequest {
 }
 message GetCtipResponse {
   message Ctip {
-    bytes txid = 1;
+    ConsensusHex txid = 1;
     uint32 vout = 2;
     uint64 value = 3;
     uint64 sequence_number = 4;
@@ -237,8 +178,8 @@ message GetSidechainProposalsRequest {
 message GetSidechainProposalsResponse {
   message SidechainProposal {
     uint32 sidechain_number = 1;
-    bytes data = 2;
-    bytes data_hash = 3;
+    google.protobuf.BytesValue data = 2;
+    ConsensusHex data_hash = 3;
     uint32 vote_count = 4;
     uint32 proposal_height = 5;
     uint32 proposal_age = 6;
@@ -251,7 +192,7 @@ message GetSidechainsRequest {
 message GetSidechainsResponse {
   message SidechainInfo {
     uint32 sidechain_number = 1;
-    bytes data = 2;
+    google.protobuf.BytesValue data = 2;
     uint32 vote_count = 3;
     uint32 proposal_height = 4;
     uint32 activation_height = 5;
@@ -261,8 +202,8 @@ message GetSidechainsResponse {
 
 message GetTwoWayPegDataRequest {
   google.protobuf.UInt32Value sidechain_id = 1;
-  optional bytes start_block_hash = 2;
-  google.protobuf.BytesValue end_block_hash = 3;
+  optional ReverseHex start_block_hash = 2;
+  ReverseHex end_block_hash = 3;
 }
 message GetTwoWayPegDataResponse {
   message ResponseItem {
@@ -282,7 +223,7 @@ message SubscribeEventsResponse {
       BlockInfo block_info = 2;
     }
     message DisconnectBlock {
-      bytes block_hash = 1;
+      ReverseHex block_hash = 1;
     }
     oneof event {
       ConnectBlock connect_block = 1;
