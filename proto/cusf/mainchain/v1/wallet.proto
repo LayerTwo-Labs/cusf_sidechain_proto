@@ -1,0 +1,72 @@
+/* CUSF mainchain wallet service */
+
+syntax = "proto3";
+package cusf.mainchain.v1;
+
+import "google/protobuf/wrappers.proto";
+
+import "cusf/mainchain/v1/common.proto";
+
+enum AddressType {
+  ADDRESS_TYPE_UNSPECIFIED = 0;
+  ADDRESS_TYPE_DEFAULT = 1;
+  ADDRESS_TYPE_BECH32 = 2;
+  ADDRESS_TYPE_LEGACY = 3;
+  ADDRESS_TYPE_P2SH_SEGWIT = 4;
+}
+
+service WalletService {
+  rpc BroadcastWithdrawalBundle(BroadcastWithdrawalBundleRequest)
+    returns (BroadcastWithdrawalBundleResponse);
+  rpc CreateBmmCriticalDataTransaction(CreateBmmCriticalDataTransactionRequest)
+    returns (CreateBmmCriticalDataTransactionResponse);
+  rpc CreateDepositTransaction(CreateDepositTransactionRequest)
+    returns (CreateDepositTransactionResponse);
+  rpc CreateNewAddress(CreateNewAddressRequest)
+    returns (CreateNewAddressResponse);
+  // Regtest only
+  rpc GenerateBlocks(GenerateBlocksRequest)
+    returns (GenerateBlocksResponse);
+}
+
+message BroadcastWithdrawalBundleRequest {
+  google.protobuf.UInt32Value sidechain_id = 1;
+  google.protobuf.BytesValue transaction = 2;
+}
+message BroadcastWithdrawalBundleResponse {
+}
+
+message CreateBmmCriticalDataTransactionRequest {
+  google.protobuf.UInt32Value sidechain_id = 1;
+  google.protobuf.UInt64Value value_sats = 2;
+  google.protobuf.UInt32Value height = 3;
+  ConsensusHex critical_hash = 4;
+  ConsensusHex prev_bytes = 5;
+}
+message CreateBmmCriticalDataTransactionResponse {
+  ConsensusHex txid = 1;
+}
+
+message CreateDepositTransactionRequest {
+  uint32 sidechain_id = 1;
+  string address = 2;
+  uint64 value_sats = 3;
+  uint64 fee_sats = 4;
+}
+message CreateDepositTransactionResponse {
+  ConsensusHex txid = 1;
+}
+
+message CreateNewAddressRequest {
+  optional string label = 1;
+  AddressType address_type = 2;
+}
+message CreateNewAddressResponse {
+  string address = 1;
+}
+
+message GenerateBlocksRequest {
+  google.protobuf.UInt32Value blocks = 1;
+}
+message GenerateBlocksResponse {
+}
