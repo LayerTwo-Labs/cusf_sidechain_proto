@@ -7,14 +7,6 @@ import "google/protobuf/wrappers.proto";
 
 import "cusf/mainchain/v1/common.proto";
 
-enum AddressType {
-  ADDRESS_TYPE_UNSPECIFIED = 0;
-  ADDRESS_TYPE_DEFAULT = 1;
-  ADDRESS_TYPE_BECH32 = 2;
-  ADDRESS_TYPE_LEGACY = 3;
-  ADDRESS_TYPE_P2SH_SEGWIT = 4;
-}
-
 service WalletService {
   rpc BroadcastWithdrawalBundle(BroadcastWithdrawalBundleRequest)
     returns (BroadcastWithdrawalBundleResponse);
@@ -58,9 +50,8 @@ message CreateDepositTransactionResponse {
 }
 
 message CreateNewAddressRequest {
-  optional string label = 1;
-  AddressType address_type = 2;
 }
+
 message CreateNewAddressResponse {
   string address = 1;
 }
