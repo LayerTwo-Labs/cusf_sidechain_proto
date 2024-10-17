@@ -33,7 +33,7 @@ message CreateBmmCriticalDataTransactionRequest {
   google.protobuf.UInt64Value value_sats = 2;
   google.protobuf.UInt32Value height = 3;
   ConsensusHex critical_hash = 4;
-  ConsensusHex prev_bytes = 5;
+  ReverseHex prev_bytes = 5;
 }
 message CreateBmmCriticalDataTransactionResponse {
   ConsensusHex txid = 1;
