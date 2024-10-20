@@ -178,7 +178,16 @@ message GetSidechainProposalsRequest {
 message GetSidechainProposalsResponse {
   message SidechainProposal {
     uint32 sidechain_number = 1;
+
+    // Raw sidechain proposal data (M1 message of BIP300)
+    // https://github.com/bitcoin/bips/blob/master/bip-0300.mediawiki#m1----propose-sidechain
     google.protobuf.BytesValue data = 2;
+
+
+    // Deserialized sidechain proposal. Might be nil, if we're
+    // unable to deserialize it.
+    optional DeserializedSidechain deserialized = 7;
+
     ConsensusHex data_hash = 3;
     uint32 vote_count = 4;
     uint32 proposal_height = 5;
@@ -231,4 +240,17 @@ message SubscribeEventsResponse {
     }
   }
   Event event = 1;
+}
+
+message DeserializedSidechain {
+  oneof version {
+    DeserializedSidechainV0 v0 = 1;
+  }
+}
+
+message DeserializedSidechainV0 {
+  string title = 1;
+  string description = 2;
+  bytes hash_id_1 = 3;
+  bytes hash_id_2 = 4;
 }
