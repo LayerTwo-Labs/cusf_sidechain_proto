@@ -59,6 +59,19 @@ message BlockInfo {
   optional ConsensusHex bmm_commitment = 3;
 }
 
+message SidechainDeclarationV0 {
+  google.protobuf.StringValue title = 1;
+  google.protobuf.StringValue description = 2;
+  ConsensusHex hash_id_1 = 3;
+  ConsensusHex hash_id_2 = 4;
+}
+
+message SidechainDeclaration {
+  oneof version {
+    SidechainDeclarationV0 v0 = 1;
+  }
+}
+
 service ValidatorService {
   rpc GetBlockHeaderInfo(GetBlockHeaderInfoRequest)
     returns (GetBlockHeaderInfoResponse);
@@ -178,7 +191,19 @@ message GetSidechainProposalsRequest {
 message GetSidechainProposalsResponse {
   message SidechainProposal {
     uint32 sidechain_number = 1;
+
+    // protolint:disable MAX_LINE_LENGTH
+
+    // Raw sidechain proposal data (M1 message of BIP300)
+    // https://github.com/bitcoin/bips/blob/master/bip-0300.mediawiki#m1----propose-sidechain
     google.protobuf.BytesValue data = 2;
+
+    // protolint:enable MAX_LINE_LENGTH
+
+    // Sidechain data, as declared in the M1 proposal.
+    // Might be nil, if the proposal uses an unknown version.
+    optional SidechainDeclaration declaration = 7;
+
     ConsensusHex data_hash = 3;
     uint32 vote_count = 4;
     uint32 proposal_height = 5;
