@@ -16,6 +16,8 @@ service WalletService {
     returns (CreateDepositTransactionResponse);
   rpc CreateNewAddress(CreateNewAddressRequest)
     returns (CreateNewAddressResponse);
+  rpc CreateSidechainProposal(CreateSidechainProposalRequest)
+    returns (CreateSidechainProposalResponse);
   // Regtest only
   rpc GenerateBlocks(GenerateBlocksRequest)
     returns (GenerateBlocksResponse);
@@ -36,7 +38,7 @@ message CreateBmmCriticalDataTransactionRequest {
   cusf.common.v1.ReverseHex prev_bytes = 5;
 }
 message CreateBmmCriticalDataTransactionResponse {
-  cusf.common.v1.ConsensusHex txid = 1;
+  cusf.common.v1.ReverseHex txid = 1;
 }
 
 message CreateDepositTransactionRequest {
@@ -46,7 +48,7 @@ message CreateDepositTransactionRequest {
   uint64 fee_sats = 4;
 }
 message CreateDepositTransactionResponse {
-  cusf.common.v1.ConsensusHex txid = 1;
+  cusf.common.v1.ReverseHex txid = 1;
 }
 
 message CreateNewAddressRequest {
@@ -54,6 +56,15 @@ message CreateNewAddressRequest {
 
 message CreateNewAddressResponse {
   string address = 1;
+}
+
+message CreateSidechainProposalRequest {
+  google.protobuf.UInt32Value sidechain_id = 1;
+  SidechainDeclaration declaration = 2;
+}
+
+message CreateSidechainProposalResponse {
+  ReverseHex txid = 1;
 }
 
 message GenerateBlocksRequest {

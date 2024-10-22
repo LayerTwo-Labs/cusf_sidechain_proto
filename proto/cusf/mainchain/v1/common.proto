@@ -1,25 +1,17 @@
 /* Common message types */
 
 syntax = "proto3";
-package cusf.common.v1;
+package cusf.mainchain.v1;
 
 import "google/protobuf/wrappers.proto";
 
-/// Consensus-encoded hex
-message ConsensusHex {
-  google.protobuf.StringValue hex = 1;
-}
-
-/// Reverse-encoded hex
-message ReverseHex {
-  google.protobuf.StringValue hex = 1;
-}
+import "cusf/common/v1/common.proto";
 
 message SidechainDeclarationV0 {
   google.protobuf.StringValue title = 1;
   google.protobuf.StringValue description = 2;
-  ConsensusHex hash_id_1 = 3;
-  ConsensusHex hash_id_2 = 4;
+  cusf.common.v1.ConsensusHex hash_id_1 = 3;
+  cusf.common.v1.ConsensusHex hash_id_2 = 4;
 }
 
 message SidechainDeclaration {

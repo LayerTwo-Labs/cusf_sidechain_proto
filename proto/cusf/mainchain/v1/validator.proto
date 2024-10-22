@@ -25,7 +25,7 @@ enum Network {
 }
 
 message OutPoint {
-  cusf.common.v1.ConsensusHex txid = 1;
+  cusf.common.v1.ReverseHex txid = 1;
   uint32 vout = 2;
 }
 
@@ -57,19 +57,6 @@ message BlockInfo {
   repeated Deposit deposits = 1;
   repeated WithdrawalBundleEvent withdrawal_bundle_events = 2;
   optional cusf.common.v1.ConsensusHex bmm_commitment = 3;
-}
-
-message SidechainDeclarationV0 {
-  google.protobuf.StringValue title = 1;
-  google.protobuf.StringValue description = 2;
-  cusf.common.v1.ConsensusHex hash_id_1 = 3;
-  cusf.common.v1.ConsensusHex hash_id_2 = 4;
-}
-
-message SidechainDeclaration {
-  oneof version {
-    SidechainDeclarationV0 v0 = 1;
-  }
 }
 
 service ValidatorService {
@@ -147,7 +134,7 @@ message GetCoinbasePSBTRequest {
   }
   message ProposeBundle {
     google.protobuf.UInt32Value sidechain_number = 1;
-    cusf.common.v1.ConsensusHex bundle_txid = 2;
+    cusf.common.v1.ReverseHex bundle_txid = 2;
   }
   message AckBundles {
     message RepeatPrevious {
@@ -178,7 +165,7 @@ message GetCtipRequest {
 }
 message GetCtipResponse {
   message Ctip {
-    cusf.common.v1.ConsensusHex txid = 1;
+    cusf.common.v1.ReverseHex txid = 1;
     uint32 vout = 2;
     uint64 value = 3;
     uint64 sequence_number = 4;
