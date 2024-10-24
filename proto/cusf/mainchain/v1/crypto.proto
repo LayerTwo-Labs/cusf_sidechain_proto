@@ -3,6 +3,8 @@
 syntax = "proto3";
 package cusf.crypto.v1;
 
+import "google/protobuf/wrappers.proto";
+
 import "cusf/mainchain/v1/common.proto";
 
 service CryptoService {
