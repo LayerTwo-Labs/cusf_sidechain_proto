@@ -19,10 +19,6 @@ service WalletService {
   // Regtest only
   rpc GenerateBlocks(GenerateBlocksRequest)
     returns (GenerateBlocksResponse);
-  rpc Ripemd160(Ripemd160Request)
-    returns (Ripemd160Response);
-  rpc HmacSha512(HmacSha512Request)
-    returns (HmacSha512Response);
 }
 
 message BroadcastWithdrawalBundleRequest {
@@ -64,19 +60,4 @@ message GenerateBlocksRequest {
   google.protobuf.UInt32Value blocks = 1;
 }
 message GenerateBlocksResponse {
-}
-
-message Ripemd160Request {
-  ConsensusHex message = 1;
-}
-message Ripemd160Response {
-  ConsensusHex hash = 1;
-}
-
-message HmacSha512Request {
-  ConsensusHex secret = 1;
-  ConsensusHex message = 2;
-}
-message HmacSha512Response {
-  ConsensusHex hash = 1;
 }

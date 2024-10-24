@@ -1,0 +1,28 @@
+/* CUSF crypto service */
+
+syntax = "proto3";
+package cusf.crypto.v1;
+
+import "cusf/mainchain/v1/common.proto";
+
+service CryptoService {
+  rpc Ripemd160(Ripemd160Request)
+    returns (Ripemd160Response);
+  rpc HmacSha512(HmacSha512Request)
+    returns (HmacSha512Response);
+}
+
+message Ripemd160Request {
+  ConsensusHex message = 1;
+}
+message Ripemd160Response {
+  ConsensusHex hash = 1;
+}
+
+message HmacSha512Request {
+  ConsensusHex secret = 1;
+  ConsensusHex message = 2;
+}
+message HmacSha512Response {
+  ConsensusHex hash = 1;
+}
