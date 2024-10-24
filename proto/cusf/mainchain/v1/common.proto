@@ -14,3 +14,20 @@ message ConsensusHex {
 message ReverseHex {
   google.protobuf.StringValue hex = 1;
 }
+
+message OutPoint {
+  ReverseHex txid = 1;
+  google.protobuf.UInt32Value vout = 2;
+}
+
+message SidechainDeclaration {
+  message V0 {
+    google.protobuf.StringValue title = 1;
+    google.protobuf.StringValue description = 2;
+    ConsensusHex hash_id_1 = 3;
+    ConsensusHex hash_id_2 = 4;
+  }
+  oneof sidechain_declaration {
+    V0 v0 = 1;
+  }
+}

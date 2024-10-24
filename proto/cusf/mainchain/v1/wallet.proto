@@ -16,6 +16,14 @@ service WalletService {
     returns (CreateDepositTransactionResponse);
   rpc CreateNewAddress(CreateNewAddressRequest)
     returns (CreateNewAddressResponse);
+  // Create a new sidechain proposal (M1 in BIP300) and persist to the local
+  // database for further processing.
+  // Sidechain proposals must be included in the coinbase transaction of a
+  // newly mined block, so this proposal is not active until the wallet has
+  // been able to generate a new block.
+  // Returns a stream of (non-)confirmation events for the sidechain proposal.
+  rpc CreateSidechainProposal(CreateSidechainProposalRequest)
+    returns (stream CreateSidechainProposalResponse);
   // Regtest only
   rpc GenerateBlocks(GenerateBlocksRequest)
     returns (GenerateBlocksResponse);
@@ -36,7 +44,7 @@ message CreateBmmCriticalDataTransactionRequest {
   ReverseHex prev_bytes = 5;
 }
 message CreateBmmCriticalDataTransactionResponse {
-  ConsensusHex txid = 1;
+  ReverseHex txid = 1;
 }
 
 message CreateDepositTransactionRequest {
@@ -46,7 +54,7 @@ message CreateDepositTransactionRequest {
   uint64 fee_sats = 4;
 }
 message CreateDepositTransactionResponse {
-  ConsensusHex txid = 1;
+  ReverseHex txid = 1;
 }
 
 message CreateNewAddressRequest {
@@ -54,6 +62,30 @@ message CreateNewAddressRequest {
 
 message CreateNewAddressResponse {
   string address = 1;
+}
+
+message CreateSidechainProposalRequest {
+  google.protobuf.UInt32Value sidechain_id = 1;
+  SidechainDeclaration declaration = 2;
+}
+
+message CreateSidechainProposalResponse {
+  message Confirmed {
+    ReverseHex block_hash = 1;
+    google.protobuf.UInt32Value confirmations = 2;
+    google.protobuf.UInt32Value height = 3;
+    OutPoint outpoint = 4;
+    ReverseHex prev_block_hash = 5;
+  }
+  message NotConfirmed {
+    ReverseHex block_hash = 1;
+    google.protobuf.UInt32Value height = 2;
+    ReverseHex prev_block_hash = 3;
+  }
+  oneof event {
+    Confirmed confirmed = 1;
+    NotConfirmed not_confirmed = 2;
+  }
 }
 
 message GenerateBlocksRequest {
