@@ -13,16 +13,16 @@ service CryptoService {
 }
 
 message Ripemd160Request {
-  ConsensusHex message = 1;
+  cusf.mainchain.v1.ConsensusHex message = 1;
 }
 message Ripemd160Response {
-  ConsensusHex hash = 1;
+  cusf.mainchain.v1.ConsensusHex hash = 1;
 }
 
 message HmacSha512Request {
-  ConsensusHex secret = 1;
-  ConsensusHex message = 2;
+  cusf.mainchain.v1.ConsensusHex secret = 1;
+  cusf.mainchain.v1.ConsensusHex message = 2;
 }
 message HmacSha512Response {
-  ConsensusHex hash = 1;
+  cusf.mainchain.v1.ConsensusHex hash = 1;
 }
