@@ -5,7 +5,7 @@ package cusf.mainchain.v1;
 
 import "google/protobuf/wrappers.proto";
 
-import "cusf/mainchain/v1/common.proto";
+import "cusf/common/v1/common.proto";
 
 service WalletService {
   rpc BroadcastWithdrawalBundle(BroadcastWithdrawalBundleRequest)
@@ -32,11 +32,11 @@ message CreateBmmCriticalDataTransactionRequest {
   google.protobuf.UInt32Value sidechain_id = 1;
   google.protobuf.UInt64Value value_sats = 2;
   google.protobuf.UInt32Value height = 3;
-  ConsensusHex critical_hash = 4;
-  ReverseHex prev_bytes = 5;
+  cusf.common.v1.ConsensusHex critical_hash = 4;
+  cusf.common.v1.ReverseHex prev_bytes = 5;
 }
 message CreateBmmCriticalDataTransactionResponse {
-  ConsensusHex txid = 1;
+  cusf.common.v1.ConsensusHex txid = 1;
 }
 
 message CreateDepositTransactionRequest {
@@ -46,7 +46,7 @@ message CreateDepositTransactionRequest {
   uint64 fee_sats = 4;
 }
 message CreateDepositTransactionResponse {
-  ConsensusHex txid = 1;
+  cusf.common.v1.ConsensusHex txid = 1;
 }
 
 message CreateNewAddressRequest {

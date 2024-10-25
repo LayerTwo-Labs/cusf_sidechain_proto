@@ -1,7 +1,7 @@
 /* Common message types */
 
 syntax = "proto3";
-package cusf.mainchain.v1;
+package cusf.common.v1;
 
 import "google/protobuf/wrappers.proto";
 

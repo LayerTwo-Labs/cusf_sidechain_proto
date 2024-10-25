@@ -3,26 +3,26 @@
 syntax = "proto3";
 package cusf.crypto.v1;
 
-import "cusf/mainchain/v1/common.proto";
+import "cusf/common/v1/common.proto";
 
 service CryptoService {
-  rpc Ripemd160(Ripemd160Request)
-    returns (Ripemd160Response);
   rpc HmacSha512(HmacSha512Request)
     returns (HmacSha512Response);
-}
-
-message Ripemd160Request {
-  cusf.mainchain.v1.ConsensusHex message = 1;
-}
-message Ripemd160Response {
-  cusf.mainchain.v1.ConsensusHex hash = 1;
+  rpc Ripemd160(Ripemd160Request)
+    returns (Ripemd160Response);
 }
 
 message HmacSha512Request {
-  cusf.mainchain.v1.ConsensusHex secret = 1;
-  cusf.mainchain.v1.ConsensusHex message = 2;
+  cusf.common.v1.ConsensusHex key = 1;
+  cusf.common.v1.ConsensusHex msg = 2;
 }
 message HmacSha512Response {
-  cusf.mainchain.v1.ConsensusHex hash = 1;
+  cusf.common.v1.ConsensusHex hmac = 1;
+}
+
+message Ripemd160Request {
+  cusf.common.v1.ConsensusHex msg = 1;
+}
+message Ripemd160Response {
+  cusf.common.v1.ConsensusHex digest = 1;
 }
