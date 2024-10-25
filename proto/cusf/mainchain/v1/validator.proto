@@ -5,14 +5,14 @@ package cusf.mainchain.v1;
 
 import "google/protobuf/wrappers.proto";
 
-import "cusf/mainchain/v1/common.proto";
+import "cusf/common/v1/common.proto";
 
 message BlockHeaderInfo {
-  ReverseHex block_hash = 1;
-  ReverseHex prev_block_hash = 2;
+  cusf.common.v1.ReverseHex block_hash = 1;
+  cusf.common.v1.ReverseHex prev_block_hash = 2;
   uint32 height = 3;
   // Total work as a uint256, little-endian
-  ConsensusHex work = 4;
+  cusf.common.v1.ConsensusHex work = 4;
 }
 
 enum Network {
@@ -25,12 +25,12 @@ enum Network {
 }
 
 message OutPoint {
-  ConsensusHex txid = 1;
+  cusf.common.v1.ConsensusHex txid = 1;
   uint32 vout = 2;
 }
 
 message Output {
-  ConsensusHex address = 2;
+  cusf.common.v1.ConsensusHex address = 2;
   uint64 value_sats = 3;
 }
 
@@ -48,7 +48,7 @@ enum WithdrawalBundleEventType {
 }
 
 message WithdrawalBundleEvent {
-  ConsensusHex m6id = 1;
+  cusf.common.v1.ConsensusHex m6id = 1;
   WithdrawalBundleEventType withdrawal_bundle_event_type = 2;
 }
 
@@ -56,14 +56,14 @@ message WithdrawalBundleEvent {
 message BlockInfo {
   repeated Deposit deposits = 1;
   repeated WithdrawalBundleEvent withdrawal_bundle_events = 2;
-  optional ConsensusHex bmm_commitment = 3;
+  optional cusf.common.v1.ConsensusHex bmm_commitment = 3;
 }
 
 message SidechainDeclarationV0 {
   google.protobuf.StringValue title = 1;
   google.protobuf.StringValue description = 2;
-  ConsensusHex hash_id_1 = 3;
-  ConsensusHex hash_id_2 = 4;
+  cusf.common.v1.ConsensusHex hash_id_1 = 3;
+  cusf.common.v1.ConsensusHex hash_id_2 = 4;
 }
 
 message SidechainDeclaration {
@@ -92,14 +92,14 @@ service ValidatorService {
 }
 
 message GetBlockHeaderInfoRequest {
-  ReverseHex block_hash = 1;
+  cusf.common.v1.ReverseHex block_hash = 1;
 }
 message GetBlockHeaderInfoResponse {
   BlockHeaderInfo header_info = 1;
 }
 
 message GetBlockInfoRequest {
-  ReverseHex block_hash = 1;
+  cusf.common.v1.ReverseHex block_hash = 1;
   google.protobuf.UInt32Value sidechain_id = 2;
 }
 message GetBlockInfoResponse {
@@ -108,15 +108,15 @@ message GetBlockInfoResponse {
 }
 
 message GetBmmHStarCommitmentRequest {
-  ReverseHex block_hash = 1;
+  cusf.common.v1.ReverseHex block_hash = 1;
   google.protobuf.UInt32Value sidechain_id = 2;
 }
 message GetBmmHStarCommitmentResponse {
   message BlockNotFoundError {
-    ReverseHex block_hash = 1;
+    cusf.common.v1.ReverseHex block_hash = 1;
   }
   message Commitment {
-    optional ConsensusHex commitment = 1;
+    optional cusf.common.v1.ConsensusHex commitment = 1;
   }
   oneof result {
     BlockNotFoundError block_not_found = 1;
@@ -139,15 +139,15 @@ message GetChainTipResponse {
 message GetCoinbasePSBTRequest {
   message ProposeSidechain {
     google.protobuf.UInt32Value sidechain_number = 1;
-    ConsensusHex data = 2;
+    cusf.common.v1.ConsensusHex data = 2;
   }
   message AckSidechain {
     google.protobuf.UInt32Value sidechain_number = 1;
-    ConsensusHex data_hash = 2;
+    cusf.common.v1.ConsensusHex data_hash = 2;
   }
   message ProposeBundle {
     google.protobuf.UInt32Value sidechain_number = 1;
-    ConsensusHex bundle_txid = 2;
+    cusf.common.v1.ConsensusHex bundle_txid = 2;
   }
   message AckBundles {
     message RepeatPrevious {
@@ -170,7 +170,7 @@ message GetCoinbasePSBTRequest {
   AckBundles ack_bundles = 4;
 }
 message GetCoinbasePSBTResponse {
-  ConsensusHex psbt = 1;
+  cusf.common.v1.ConsensusHex psbt = 1;
 }
 
 message GetCtipRequest {
@@ -178,7 +178,7 @@ message GetCtipRequest {
 }
 message GetCtipResponse {
   message Ctip {
-    ConsensusHex txid = 1;
+    cusf.common.v1.ConsensusHex txid = 1;
     uint32 vout = 2;
     uint64 value = 3;
     uint64 sequence_number = 4;
@@ -204,7 +204,7 @@ message GetSidechainProposalsResponse {
     // Might be nil, if the proposal uses an unknown version.
     optional SidechainDeclaration declaration = 7;
 
-    ConsensusHex data_hash = 3;
+    cusf.common.v1.ConsensusHex data_hash = 3;
     uint32 vote_count = 4;
     uint32 proposal_height = 5;
     uint32 proposal_age = 6;
@@ -227,8 +227,8 @@ message GetSidechainsResponse {
 
 message GetTwoWayPegDataRequest {
   google.protobuf.UInt32Value sidechain_id = 1;
-  optional ReverseHex start_block_hash = 2;
-  ReverseHex end_block_hash = 3;
+  optional cusf.common.v1.ReverseHex start_block_hash = 2;
+  cusf.common.v1.ReverseHex end_block_hash = 3;
 }
 message GetTwoWayPegDataResponse {
   message ResponseItem {
@@ -248,7 +248,7 @@ message SubscribeEventsResponse {
       BlockInfo block_info = 2;
     }
     message DisconnectBlock {
-      ReverseHex block_hash = 1;
+      cusf.common.v1.ReverseHex block_hash = 1;
     }
     oneof event {
       ConnectBlock connect_block = 1;
