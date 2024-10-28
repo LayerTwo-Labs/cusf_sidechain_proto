@@ -90,7 +90,13 @@ message CreateSidechainProposalResponse {
 }
 
 message GenerateBlocksRequest {
+  // Number of blocks to generate. 
   google.protobuf.UInt32Value blocks = 1;
+
+  // ACK all sidechain proposals, irregardless of if they are already 
+  // in the wallet DB. 
+  bool ack_all_proposals = 2;
 }
+
 message GenerateBlocksResponse {
 }
