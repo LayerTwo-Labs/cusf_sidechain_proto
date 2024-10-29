@@ -6,6 +6,7 @@ package cusf.mainchain.v1;
 import "google/protobuf/wrappers.proto";
 
 import "cusf/common/v1/common.proto";
+import "cusf/mainchain/v1/common.proto";
 
 message BlockHeaderInfo {
   cusf.common.v1.ReverseHex block_hash = 1;
@@ -22,11 +23,6 @@ enum Network {
   NETWORK_REGTEST = 3;
   NETWORK_SIGNET = 4;
   NETWORK_TESTNET = 5;
-}
-
-message OutPoint {
-  cusf.common.v1.ConsensusHex txid = 1;
-  uint32 vout = 2;
 }
 
 message Output {
@@ -57,19 +53,6 @@ message BlockInfo {
   repeated Deposit deposits = 1;
   repeated WithdrawalBundleEvent withdrawal_bundle_events = 2;
   optional cusf.common.v1.ConsensusHex bmm_commitment = 3;
-}
-
-message SidechainDeclarationV0 {
-  google.protobuf.StringValue title = 1;
-  google.protobuf.StringValue description = 2;
-  cusf.common.v1.ConsensusHex hash_id_1 = 3;
-  cusf.common.v1.ConsensusHex hash_id_2 = 4;
-}
-
-message SidechainDeclaration {
-  oneof version {
-    SidechainDeclarationV0 v0 = 1;
-  }
 }
 
 service ValidatorService {
@@ -147,7 +130,7 @@ message GetCoinbasePSBTRequest {
   }
   message ProposeBundle {
     google.protobuf.UInt32Value sidechain_number = 1;
-    cusf.common.v1.ConsensusHex bundle_txid = 2;
+    cusf.common.v1.ReverseHex bundle_txid = 2;
   }
   message AckBundles {
     message RepeatPrevious {
@@ -178,7 +161,7 @@ message GetCtipRequest {
 }
 message GetCtipResponse {
   message Ctip {
-    cusf.common.v1.ConsensusHex txid = 1;
+    cusf.common.v1.ReverseHex txid = 1;
     uint32 vout = 2;
     uint64 value = 3;
     uint64 sequence_number = 4;
@@ -190,24 +173,19 @@ message GetSidechainProposalsRequest {
 }
 message GetSidechainProposalsResponse {
   message SidechainProposal {
-    uint32 sidechain_number = 1;
+    google.protobuf.UInt32Value sidechain_number = 1;
 
-    // protolint:disable MAX_LINE_LENGTH
-
-    // Raw sidechain proposal data (M1 message of BIP300)
-    // https://github.com/bitcoin/bips/blob/master/bip-0300.mediawiki#m1----propose-sidechain
-    google.protobuf.BytesValue data = 2;
-
-    // protolint:enable MAX_LINE_LENGTH
+    // Raw sidechain proposal description
+    cusf.common.v1.ConsensusHex description = 2;
 
     // Sidechain data, as declared in the M1 proposal.
     // Might be nil, if the proposal uses an unknown version.
     optional SidechainDeclaration declaration = 7;
 
-    cusf.common.v1.ConsensusHex data_hash = 3;
-    uint32 vote_count = 4;
-    uint32 proposal_height = 5;
-    uint32 proposal_age = 6;
+    cusf.common.v1.ReverseHex description_sha256d_hash = 3;
+    google.protobuf.UInt32Value vote_count = 4;
+    google.protobuf.UInt32Value proposal_height = 5;
+    google.protobuf.UInt32Value proposal_age = 6;
   }
   repeated SidechainProposal sidechain_proposals = 1;
 }
@@ -216,11 +194,11 @@ message GetSidechainsRequest {
 }
 message GetSidechainsResponse {
   message SidechainInfo {
-    uint32 sidechain_number = 1;
-    google.protobuf.BytesValue data = 2;
-    uint32 vote_count = 3;
-    uint32 proposal_height = 4;
-    uint32 activation_height = 5;
+    google.protobuf.UInt32Value sidechain_number = 1;
+    cusf.common.v1.ConsensusHex description = 2;
+    google.protobuf.UInt32Value vote_count = 3;
+    google.protobuf.UInt32Value proposal_height = 4;
+    google.protobuf.UInt32Value activation_height = 5;
   }
   repeated SidechainInfo sidechains = 1;
 }
