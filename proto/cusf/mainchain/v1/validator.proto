@@ -175,12 +175,8 @@ message GetSidechainProposalsResponse {
   message SidechainProposal {
     google.protobuf.UInt32Value sidechain_number = 1;
 
-    // protolint:disable MAX_LINE_LENGTH
-
     // Raw sidechain proposal description
     cusf.common.v1.ConsensusHex description = 2;
-
-    // protolint:enable MAX_LINE_LENGTH
 
     // Sidechain data, as declared in the M1 proposal.
     // Might be nil, if the proposal uses an unknown version.
