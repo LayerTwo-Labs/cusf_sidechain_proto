@@ -10,8 +10,8 @@ service CryptoService {
     returns (HmacSha512Response);
   rpc Ripemd160(Ripemd160Request)
     returns (Ripemd160Response);
-  rpc Secp256k1PrivKeyToPubKey(Secp256k1PrivKeyToPubKeyRequest)
-    returns (Secp256k1PrivKeyToPubKeyResponse);
+  rpc Secp256k1SecretKeyToPublicKey(Secp256k1SecretKeyToPublicKeyRequest)
+    returns (Secp256k1SecretKeyToPublicKeyResponse);
   rpc Secp256k1Sign(Secp256k1SignRequest)
     returns (Secp256k1SignResponse);
   rpc Secp256k1Verify(Secp256k1VerifyRequest)
@@ -33,16 +33,16 @@ message Ripemd160Response {
   cusf.common.v1.ConsensusHex digest = 1;
 }
 
-message Secp256k1PrivKeyToPubKeyRequest {
-  cusf.common.v1.ConsensusHex priv_key = 1;
+message Secp256k1SecretKeyToPublicKeyRequest {
+  cusf.common.v1.ConsensusHex secret_key = 1;
 }
-message Secp256k1PrivKeyToPubKeyResponse {
-  cusf.common.v1.ConsensusHex pub_key = 1;
+message Secp256k1SecretKeyToPublicKeyResponse {
+  cusf.common.v1.ConsensusHex public_key = 1;
 }
 
 message Secp256k1SignRequest {
   cusf.common.v1.ConsensusHex message = 1;
-  cusf.common.v1.ConsensusHex priv_key = 2;
+  cusf.common.v1.ConsensusHex secret_key = 2;
 }
 message Secp256k1SignResponse {
   cusf.common.v1.ConsensusHex signature = 1;
@@ -51,7 +51,7 @@ message Secp256k1SignResponse {
 message Secp256k1VerifyRequest {
   cusf.common.v1.ConsensusHex message = 1;
   cusf.common.v1.ConsensusHex signature = 2;
-  cusf.common.v1.ConsensusHex pub_key = 3;
+  cusf.common.v1.ConsensusHex public_key = 3;
 }
 message Secp256k1VerifyResponse {
   bool valid = 1;
