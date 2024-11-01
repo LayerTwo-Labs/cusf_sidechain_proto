@@ -56,8 +56,12 @@ message BlockInfo {
 }
 
 service ValidatorService {
+  // Fetches information about a specific mainchain block header.
   rpc GetBlockHeaderInfo(GetBlockHeaderInfoRequest)
     returns (GetBlockHeaderInfoResponse);
+
+  // Fetches information about a specific mainchain block, and how it pertains
+  // to events happening on a specific sidechain. 
   rpc GetBlockInfo(GetBlockInfoRequest) returns (GetBlockInfoResponse);
   rpc GetBmmHStarCommitment(GetBmmHStarCommitmentRequest)
     returns (GetBmmHStarCommitmentResponse);
@@ -82,11 +86,19 @@ message GetBlockHeaderInfoResponse {
 }
 
 message GetBlockInfoRequest {
+  // The block to fetch information about.
   cusf.common.v1.ReverseHex block_hash = 1;
+
+  // The sidechain to filter for events relating to. 
   google.protobuf.UInt32Value sidechain_id = 2;
 }
+
 message GetBlockInfoResponse {
+  // Information about the block itself.
   BlockHeaderInfo header_info = 1;
+
+  // Information about the block, filtered for events relating to 
+  // a specific sidechain.
   BlockInfo block_info = 2;
 }
 
