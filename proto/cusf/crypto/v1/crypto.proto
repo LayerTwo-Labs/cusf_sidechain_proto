@@ -19,18 +19,18 @@ service CryptoService {
 }
 
 message HmacSha512Request {
-  cusf.common.v1.ConsensusHex key = 1;
-  cusf.common.v1.ConsensusHex msg = 2;
+  cusf.common.v1.Hex key = 1;
+  cusf.common.v1.Hex msg = 2;
 }
 message HmacSha512Response {
-  cusf.common.v1.ConsensusHex hmac = 1;
+  cusf.common.v1.Hex hmac = 1;
 }
 
 message Ripemd160Request {
-  cusf.common.v1.ConsensusHex msg = 1;
+  cusf.common.v1.Hex msg = 1;
 }
 message Ripemd160Response {
-  cusf.common.v1.ConsensusHex digest = 1;
+  cusf.common.v1.Hex digest = 1;
 }
 
 message Secp256k1SecretKeyToPublicKeyRequest {
@@ -41,16 +41,16 @@ message Secp256k1SecretKeyToPublicKeyResponse {
 }
 
 message Secp256k1SignRequest {
-  cusf.common.v1.ConsensusHex message = 1;
+  cusf.common.v1.Hex message = 1;
   cusf.common.v1.ConsensusHex secret_key = 2;
 }
 message Secp256k1SignResponse {
-  cusf.common.v1.ConsensusHex signature = 1;
+  cusf.common.v1.Hex signature = 1;
 }
 
 message Secp256k1VerifyRequest {
-  cusf.common.v1.ConsensusHex message = 1;
-  cusf.common.v1.ConsensusHex signature = 2;
+  cusf.common.v1.Hex message = 1;
+  cusf.common.v1.Hex signature = 2;
   cusf.common.v1.ConsensusHex public_key = 3;
 }
 message Secp256k1VerifyResponse {
