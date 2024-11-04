@@ -25,13 +25,13 @@ enum Network {
   NETWORK_TESTNET = 5;
 }
 
-message Output {
-  cusf.common.v1.ConsensusHex address = 2;
-  uint64 value_sats = 3;
-}
-
 message Deposit {
-  uint64 sequence_number = 1;
+  message Output {
+    cusf.common.v1.Hex address = 2;
+    google.protobuf.UInt64Value value_sats = 3;
+  }
+
+  google.protobuf.UInt64Value sequence_number = 1;
   OutPoint outpoint = 2;
   Output output = 3;
 }
