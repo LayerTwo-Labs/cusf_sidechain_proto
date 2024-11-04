@@ -49,10 +49,10 @@ message CreateBmmCriticalDataTransactionResponse {
 }
 
 message CreateDepositTransactionRequest {
-  uint32 sidechain_id = 1;
-  string address = 2;
-  uint64 value_sats = 3;
-  uint64 fee_sats = 4;
+  google.protobuf.UInt32Value sidechain_id = 1;
+  cusf.common.v1.ConsensusHex address = 2;
+  google.protobuf.UInt64Value value_sats = 3;
+  google.protobuf.UInt64Value fee_sats = 4;
 }
 message CreateDepositTransactionResponse {
   cusf.common.v1.ReverseHex txid = 1;
