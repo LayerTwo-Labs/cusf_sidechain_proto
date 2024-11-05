@@ -3,10 +3,27 @@
 syntax = "proto3";
 package cusf.mainchain.v1;
 
+import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
 import "cusf/common/v1/common.proto";
 import "cusf/mainchain/v1/common.proto";
+
+message WalletTransaction {
+  message Confirmation {
+    uint32 height = 1;
+    cusf.common.v1.ReverseHex block_hash = 2;
+    google.protobuf.Timestamp timestamp = 3;
+  }
+
+  cusf.common.v1.ReverseHex txid = 1;
+
+  uint64 fee_sats = 2;
+  uint64 received_sats = 3;
+  uint64 sent_sats = 4;
+
+  Confirmation confirmation_info = 5;
+}
 
 service WalletService {
   rpc BroadcastWithdrawalBundle(BroadcastWithdrawalBundleRequest)
@@ -27,6 +44,8 @@ service WalletService {
     returns (stream CreateSidechainProposalResponse);
   rpc GetBalance(GetBalanceRequest)
     returns (GetBalanceResponse);
+  rpc ListTransactions(ListTransactionsRequest)
+    returns (ListTransactionsResponse);
   // Regtest only
   rpc GenerateBlocks(GenerateBlocksRequest)
     returns (GenerateBlocksResponse);
@@ -108,5 +127,11 @@ message GetBalanceRequest {
 message GetBalanceResponse {
   uint64 confirmed_sats = 1;
   uint64 pending_sats = 2;
+}
+
+message ListTransactionsRequest {
+}
+message ListTransactionsResponse {
+  repeated WalletTransaction transactions = 1;
 }
 
