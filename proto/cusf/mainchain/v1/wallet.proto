@@ -25,6 +25,8 @@ service WalletService {
   // Returns a stream of (non-)confirmation events for the sidechain proposal.
   rpc CreateSidechainProposal(CreateSidechainProposalRequest)
     returns (stream CreateSidechainProposalResponse);
+  rpc GetBalance(GetBalanceRequest)
+    returns (GetBalanceResponse);
   // Regtest only
   rpc GenerateBlocks(GenerateBlocksRequest)
     returns (GenerateBlocksResponse);
@@ -100,3 +102,11 @@ message GenerateBlocksRequest {
 
 message GenerateBlocksResponse {
 }
+
+message GetBalanceRequest {
+}
+message GetBalanceResponse {
+  uint64 confirmed_sats = 1;
+  uint64 pending_sats = 2;
+}
+
