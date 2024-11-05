@@ -46,6 +46,8 @@ service WalletService {
     returns (GetBalanceResponse);
   rpc ListTransactions(ListTransactionsRequest)
     returns (ListTransactionsResponse);
+  rpc SendTransaction(SendTransactionRequest)
+    returns (SendTransactionResponse);
   // Regtest only
   rpc GenerateBlocks(GenerateBlocksRequest)
     returns (GenerateBlocksResponse);
@@ -133,5 +135,30 @@ message ListTransactionsRequest {
 }
 message ListTransactionsResponse {
   repeated WalletTransaction transactions = 1;
+}
+
+message SendTransactionRequest {
+  message FeeRate {
+    oneof fee {
+      // Fee rate, measured in sat/vbyte.
+      uint64 sat_per_vbyte = 1;
+
+      // Fee amount, measured in sats.
+      uint64 sats = 2;
+    }
+  }
+
+  // Address -> satoshi amount
+  map<string, uint64> destinations = 1;
+
+  // If not set, a reasonable rate is used by asking Core for an estimate.
+  FeeRate fee_rate = 2;
+
+  // if set, the transaction will add a separate OP_RETURN output with this
+  // message.
+  optional cusf.common.v1.Hex op_return_message = 3;
+}
+message SendTransactionResponse {
+  cusf.common.v1.ReverseHex txid = 1;
 }
 
