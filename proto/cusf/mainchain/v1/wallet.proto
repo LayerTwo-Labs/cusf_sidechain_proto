@@ -152,7 +152,7 @@ message SendTransactionRequest {
   map<string, uint64> destinations = 1;
 
   // If not set, a reasonable rate is used by asking Core for an estimate.
-  FeeRate fee_rate = 2;
+  optional FeeRate fee_rate = 2;
 
   // if set, the transaction will add a separate OP_RETURN output with this
   // message.
