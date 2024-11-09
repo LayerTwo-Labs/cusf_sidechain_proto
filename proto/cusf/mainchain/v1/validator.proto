@@ -36,16 +36,23 @@ message Deposit {
   Output output = 3;
 }
 
-enum WithdrawalBundleEventType {
-  WITHDRAWAL_BUNDLE_EVENT_TYPE_UNSPECIFIED = 0;
-  WITHDRAWAL_BUNDLE_EVENT_TYPE_SUBMITTED = 1;
-  WITHDRAWAL_BUNDLE_EVENT_TYPE_FAILED = 2;
-  WITHDRAWAL_BUNDLE_EVENT_TYPE_SUCCEDED = 3;
-}
-
 message WithdrawalBundleEvent {
+  message Event {
+    message Failed {
+    }
+    message Succeeded {
+      cusf.common.v1.ConsensusHex transaction = 1;
+    }
+    message Submitted {
+    }
+    oneof event {
+      Failed failed = 1;
+      Succeeded succeeded = 2;
+      Submitted submitted = 3;
+    }
+  }
   cusf.common.v1.ConsensusHex m6id = 1;
-  WithdrawalBundleEventType withdrawal_bundle_event_type = 2;
+  Event event = 2;
 }
 
 // Specific to an individual sidechain slot
