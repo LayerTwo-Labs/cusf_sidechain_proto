@@ -154,9 +154,8 @@ message SendTransactionRequest {
   // If not set, a reasonable rate is used by asking Core for an estimate.
   FeeRate fee_rate = 2;
 
-  // if set, the transaction will add a separate OP_RETURN output with this
-  // message.
-  optional cusf.common.v1.Hex op_return_message = 3;
+  // if set, will add a separate OP_RETURN output with this message.
+  optional bytes op_return_message = 3;
 }
 message SendTransactionResponse {
   cusf.common.v1.ReverseHex txid = 1;
