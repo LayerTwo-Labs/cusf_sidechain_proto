@@ -41,7 +41,8 @@ message WithdrawalBundleEvent {
     message Failed {
     }
     message Succeeded {
-      cusf.common.v1.ConsensusHex transaction = 1;
+      google.protobuf.UInt64Value sequence_number = 1;
+      cusf.common.v1.ConsensusHex transaction = 2;
     }
     message Submitted {
     }
@@ -51,15 +52,24 @@ message WithdrawalBundleEvent {
       Submitted submitted = 3;
     }
   }
+
   cusf.common.v1.ConsensusHex m6id = 1;
   Event event = 2;
 }
 
 // Specific to an individual sidechain slot
 message BlockInfo {
-  repeated Deposit deposits = 1;
-  repeated WithdrawalBundleEvent withdrawal_bundle_events = 2;
-  optional cusf.common.v1.ConsensusHex bmm_commitment = 3;
+  message Event {
+    oneof event {
+      Deposit deposit = 1;
+      WithdrawalBundleEvent withdrawal_bundle = 2;
+    }
+  }
+
+  //repeated Deposit deposits = 1;
+  //repeated WithdrawalBundleEvent withdrawal_bundle_events = 2;
+  optional cusf.common.v1.ConsensusHex bmm_commitment = 1;
+  repeated Event events = 2;
 }
 
 service ValidatorService {
