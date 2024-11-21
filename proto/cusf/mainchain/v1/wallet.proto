@@ -50,7 +50,7 @@ service WalletService {
     returns (SendTransactionResponse);
   // Regtest only
   rpc GenerateBlocks(GenerateBlocksRequest)
-    returns (GenerateBlocksResponse);
+    returns (stream GenerateBlocksResponse);
 }
 
 message BroadcastWithdrawalBundleRequest {
@@ -120,8 +120,8 @@ message GenerateBlocksRequest {
   // in the wallet DB. 
   bool ack_all_proposals = 2;
 }
-
 message GenerateBlocksResponse {
+  cusf.common.v1.ReverseHex block_hash = 1;
 }
 
 message GetBalanceRequest {
