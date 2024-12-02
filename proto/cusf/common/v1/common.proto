@@ -21,16 +21,3 @@ message Hex {
 message ReverseHex {
   google.protobuf.StringValue hex = 1;
 }
-
-message SidechainDeclarationV0 {
-  google.protobuf.StringValue title = 1;
-  google.protobuf.StringValue description = 2;
-  ConsensusHex hash_id_1 = 3;
-  ConsensusHex hash_id_2 = 4;
-}
-
-message SidechainDeclaration {
-  oneof version {
-    SidechainDeclarationV0 v0 = 1;
-  }
-}
