@@ -228,6 +228,10 @@ message GetSidechainsResponse {
     google.protobuf.UInt32Value vote_count = 3;
     google.protobuf.UInt32Value proposal_height = 4;
     google.protobuf.UInt32Value activation_height = 5;
+
+    // Sidechain data, as declared in the M1 proposal.
+    // Might be nil, if the proposal uses an unknown version.
+    optional SidechainDeclaration declaration = 6;
   }
   repeated SidechainInfo sidechains = 1;
 }
