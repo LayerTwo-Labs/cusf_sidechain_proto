@@ -42,43 +42,21 @@ service WalletService {
   // Returns a stream of (non-)confirmation events for the sidechain proposal.
   rpc CreateSidechainProposal(CreateSidechainProposalRequest)
     returns (stream CreateSidechainProposalResponse);
+  rpc CreateWallet(CreateWalletRequest)
+    returns (CreateWalletResponse); 
   rpc GetBalance(GetBalanceRequest)
     returns (GetBalanceResponse);
+  rpc ListSidechainDepositTransactions(ListSidechainDepositTransactionsRequest)
+    returns (ListSidechainDepositTransactionsResponse);
   rpc ListTransactions(ListTransactionsRequest)
     returns (ListTransactionsResponse);
   rpc SendTransaction(SendTransactionRequest)
     returns (SendTransactionResponse);
+  rpc UnlockWallet(UnlockWalletRequest)
+    returns (UnlockWalletResponse);
   // Regtest only
   rpc GenerateBlocks(GenerateBlocksRequest)
     returns (stream GenerateBlocksResponse);
-  
-  rpc UnlockWallet(UnlockWalletRequest)
-    returns (UnlockWalletResponse);
-
-  rpc CreateWallet(CreateWalletRequest)
-    returns (CreateWalletResponse); 
-}
-
-message UnlockWalletRequest {
-  string password = 1;
-}
-
-message UnlockWalletResponse {
-}
-
-message CreateWalletRequest {
-  // BIP39 mnemonic. 12 or 24 words.
-  repeated string mnemonic_words = 1;
-
-  // Path to a file containing the mnemonic. 
-  string mnemonic_path = 2;
-
-  // Password for the wallet. Used to encrypt the mnemonic in storage.
-  // NOT a BIP39 passphrase.
-  string password = 3;
-}
-
-message CreateWalletResponse {
 }
 
 message BroadcastWithdrawalBundleRequest {
@@ -149,16 +127,18 @@ message CreateSidechainProposalResponse {
   }
 }
 
-message GenerateBlocksRequest {
-  // Number of blocks to generate. 
-  google.protobuf.UInt32Value blocks = 1;
+message CreateWalletRequest {
+  // BIP39 mnemonic. 12 or 24 words.
+  repeated string mnemonic_words = 1;
 
-  // ACK all sidechain proposals, irregardless of if they are already 
-  // in the wallet DB. 
-  bool ack_all_proposals = 2;
+  // Path to a file containing the mnemonic. 
+  string mnemonic_path = 2;
+
+  // Password for the wallet. Used to encrypt the mnemonic in storage.
+  // NOT a BIP39 passphrase.
+  string password = 3;
 }
-message GenerateBlocksResponse {
-  cusf.common.v1.ReverseHex block_hash = 1;
+message CreateWalletResponse {
 }
 
 message GetBalanceRequest {
@@ -166,6 +146,16 @@ message GetBalanceRequest {
 message GetBalanceResponse {
   uint64 confirmed_sats = 1;
   uint64 pending_sats = 2;
+}
+
+message ListSidechainDepositTransactionsRequest {
+}
+message ListSidechainDepositTransactionsResponse {
+  message SidechainDepositTransaction {
+    google.protobuf.UInt32Value sidechain_number = 1;
+    WalletTransaction tx = 2;
+  }
+  repeated SidechainDepositTransaction transactions = 1;
 }
 
 message ListTransactionsRequest {
@@ -199,3 +189,20 @@ message SendTransactionResponse {
   cusf.common.v1.ReverseHex txid = 1;
 }
 
+message UnlockWalletRequest {
+  string password = 1;
+}
+message UnlockWalletResponse {
+}
+
+message GenerateBlocksRequest {
+  // Number of blocks to generate. 
+  google.protobuf.UInt32Value blocks = 1;
+
+  // ACK all sidechain proposals, irregardless of if they are already 
+  // in the wallet DB. 
+  bool ack_all_proposals = 2;
+}
+message GenerateBlocksResponse {
+  cusf.common.v1.ReverseHex block_hash = 1;
+}
