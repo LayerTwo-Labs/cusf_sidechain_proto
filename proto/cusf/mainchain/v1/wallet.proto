@@ -50,11 +50,13 @@ service WalletService {
     returns (ListSidechainDepositTransactionsResponse);
   rpc ListTransactions(ListTransactionsRequest)
     returns (ListTransactionsResponse);
+  rpc ListUnspentOutputs(ListUnspentOutputsRequest)
+    returns (ListUnspentOutputsResponse);
   rpc SendTransaction(SendTransactionRequest)
     returns (SendTransactionResponse);
   rpc UnlockWallet(UnlockWalletRequest)
     returns (UnlockWalletResponse);
-  // Regtest only
+  // Available on regtest and signet only.
   rpc GenerateBlocks(GenerateBlocksRequest)
     returns (stream GenerateBlocksResponse);
 }
@@ -205,4 +207,22 @@ message GenerateBlocksRequest {
 }
 message GenerateBlocksResponse {
   cusf.common.v1.ReverseHex block_hash = 1;
+}
+
+message ListUnspentOutputsRequest {
+}
+
+message ListUnspentOutputsResponse {
+  message Output {
+    cusf.common.v1.ReverseHex txid = 1;
+    uint32 vout = 2;
+    uint64 value_sats = 3;
+
+    // An internal output is one that was created by the wallet itself
+    // as change output for a transaction.
+    bool is_internal = 4;
+  }
+
+
+  repeated Output outputs = 1;
 }
