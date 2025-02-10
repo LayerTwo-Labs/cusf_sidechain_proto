@@ -177,6 +177,14 @@ message SendTransactionRequest {
     }
   }
 
+
+  // A previous unspent transaction output that must be included in the
+  // transaction.
+  message RequiredUtxo {
+    cusf.common.v1.ReverseHex txid = 1;
+    uint32 vout = 2;
+  }
+
   // Address -> satoshi amount
   map<string, uint64> destinations = 1;
 
@@ -186,6 +194,8 @@ message SendTransactionRequest {
   // if set, the transaction will add a separate OP_RETURN output with this
   // message.
   optional cusf.common.v1.Hex op_return_message = 3;
+
+  repeated RequiredUtxo required_utxos = 4;
 }
 message SendTransactionResponse {
   cusf.common.v1.ReverseHex txid = 1;
