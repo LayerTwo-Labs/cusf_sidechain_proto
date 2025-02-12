@@ -52,6 +52,8 @@ service WalletService {
     returns (ListTransactionsResponse);
   rpc ListUnspentOutputs(ListUnspentOutputsRequest)
     returns (ListUnspentOutputsResponse);
+  rpc GetInfo(GetInfoRequest) 
+    returns (GetInfoResponse);
   rpc SendTransaction(SendTransactionRequest)
     returns (SendTransactionResponse);
   rpc UnlockWallet(UnlockWalletRequest)
@@ -217,6 +219,22 @@ message GenerateBlocksRequest {
 }
 message GenerateBlocksResponse {
   cusf.common.v1.ReverseHex block_hash = 1;
+}
+
+message GetInfoRequest {
+}
+
+message GetInfoResponse {
+  // The network the wallet is on
+  string network = 1;
+
+  // Total number of transactions in the wallet
+  uint32 transaction_count = 2;
+
+  // Number of UTXOs in the wallet.
+  uint32 unspent_output_count = 3;
+
+  map<string, string> descriptors = 4;
 }
 
 message ListUnspentOutputsRequest {
