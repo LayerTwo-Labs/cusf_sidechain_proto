@@ -249,6 +249,12 @@ message ListUnspentOutputsResponse {
     // An internal output is one that was created by the wallet itself
     // as change output for a transaction.
     bool is_internal = 4;
+
+    bool is_confirmed = 5;
+    uint32 confirmed_at_block = 6;
+    google.protobuf.Timestamp confirmed_at_time = 7;
+    cusf.common.v1.ReverseHex confirmed_transitively = 8;
+    google.protobuf.Timestamp unconfirmed_last_seen = 9;
   }
 
 
