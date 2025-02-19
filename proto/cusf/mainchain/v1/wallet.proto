@@ -197,7 +197,13 @@ message SendTransactionRequest {
   // message.
   optional cusf.common.v1.Hex op_return_message = 3;
 
+  // UTXOs that must be included in the transaction. Incompatible with
+  // specifying a draining address.
   repeated RequiredUtxo required_utxos = 4;
+
+  // If set, the transaction will send all UTXOs in the wallet to this address.
+  // Incompatible with specifying required UTXOs.
+  optional string drain_wallet_to = 5;
 }
 message SendTransactionResponse {
   cusf.common.v1.ReverseHex txid = 1;
