@@ -3,6 +3,7 @@
 syntax = "proto3";
 package cusf.mainchain.v1;
 
+import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
 import "cusf/common/v1/common.proto";
@@ -82,6 +83,7 @@ service ValidatorService {
   rpc GetBlockInfo(GetBlockInfoRequest) returns (GetBlockInfoResponse);
   rpc GetBmmHStarCommitment(GetBmmHStarCommitmentRequest)
     returns (GetBmmHStarCommitmentResponse);
+  // Fetch information about the mainchain.
   rpc GetChainInfo(GetChainInfoRequest) returns (GetChainInfoResponse);
   rpc GetChainTip(GetChainTipRequest) returns (GetChainTipResponse);
   rpc GetCoinbasePSBT(GetCoinbasePSBTRequest) returns (GetCoinbasePSBTResponse);
@@ -139,7 +141,14 @@ message GetBmmHStarCommitmentResponse {
 message GetChainInfoRequest {
 }
 message GetChainInfoResponse {
+  message BestBlock {
+    cusf.common.v1.ReverseHex hash = 1;
+    uint32 height = 2;
+    google.protobuf.Timestamp timestamp = 3;
+  }
+
   Network network = 1;
+  BestBlock best_block = 2;
 }
 
 message GetChainTipRequest {
