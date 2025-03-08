@@ -61,6 +61,12 @@ service WalletService {
   // Available on regtest and signet only.
   rpc GenerateBlocks(GenerateBlocksRequest)
     returns (stream GenerateBlocksResponse);
+  // Create multisig address with the given public keys and required signatures
+  rpc CreateMultisigAddress(CreateMultisigAddressRequest)
+    returns (CreateMultisigAddressResponse);
+  // Create an unsigned PSBT for a multisig address
+  rpc CreateMultisigTransaction(CreateMultisigTransactionRequest)
+    returns (CreateMultisigTransactionResponse);
 }
 
 message BroadcastWithdrawalBundleRequest {
@@ -265,4 +271,73 @@ message ListUnspentOutputsResponse {
 
 
   repeated Output outputs = 1;
+}
+
+message CreateMultisigAddressRequest {
+  // Public keys of the multisig address
+  repeated string public_keys = 1;
+
+  // Number of required signatures
+  uint32 required_signatures = 2;
+  
+  // Type of address to create: "p2sh", "p2wsh", or "p2sh-p2wsh"
+  // If not provided, defaults to "p2wsh" 
+  google.protobuf.StringValue address_type = 3;
+}
+
+message CreateMultisigAddressResponse {
+  // The generated multisig address
+  string address = 1;
+  
+  // The descriptor for the multisig address
+  string descriptor = 2;
+  
+  // The redeem script for the multisig address
+  string redeem_script = 3;
+}
+
+message CreateMultisigTransactionRequest {
+  // The multisig address to spend from
+  string multisig_address = 1;
+  
+  // The redeem script for the multisig address
+  string redeem_script = 2;
+  
+  // Address -> satoshi amount
+  map<string, uint64> destinations = 3;
+  
+  // Fee rate, similar to SendTransactionRequest
+  message FeeRate {
+    oneof fee {
+      // Fee rate, measured in sat/vbyte.
+      uint64 sat_per_vbyte = 1;
+
+      // Fee amount, measured in sats.
+      uint64 sats = 2;
+    }
+  }
+  
+  // If not set, a reasonable rate is used by asking Core for an estimate.
+  optional FeeRate fee_rate = 4;
+  
+  // If set, the transaction will add a separate OP_RETURN
+  optional cusf.common.v1.Hex op_return_message = 5;
+  
+  // UTXOs from multisig address that should be included in transaction
+  message MultisigUtxo {
+    cusf.common.v1.ReverseHex txid = 1;
+    uint32 vout = 2;
+    uint64 amount = 3;
+  }
+  
+  // UTXOs from the multisig address to spend
+  repeated MultisigUtxo utxos = 6;
+}
+
+message CreateMultisigTransactionResponse {
+  // The unsigned PSBT in base64 format
+  string psbt = 1;
+  
+  // The transaction ID
+  cusf.common.v1.ReverseHex txid = 2;
 }
