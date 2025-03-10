@@ -73,13 +73,16 @@ message BlockInfo {
 }
 
 service ValidatorService {
-  // Fetches information about a specific mainchain block header.
+  // Fetches information about a specific mainchain block header,
+  // and optionally, it's ancestors
   rpc GetBlockHeaderInfo(GetBlockHeaderInfoRequest)
     returns (GetBlockHeaderInfoResponse);
 
   // Fetches information about a specific mainchain block, and how it pertains
   // to events happening on a specific sidechain. 
   rpc GetBlockInfo(GetBlockInfoRequest) returns (GetBlockInfoResponse);
+  // Fetches BMM h* commitment for a specific mainchain block,
+  // and optionally, it's ancestors
   rpc GetBmmHStarCommitment(GetBmmHStarCommitmentRequest)
     returns (GetBmmHStarCommitmentResponse);
   rpc GetChainInfo(GetChainInfoRequest) returns (GetChainInfoResponse);
@@ -97,9 +100,14 @@ service ValidatorService {
 
 message GetBlockHeaderInfoRequest {
   cusf.common.v1.ReverseHex block_hash = 1;
+  // Request block header info for up to `max_ancestors` ancestors.
+  // Fewer ancestors MAY be returned.
+  optional uint32 max_ancestors = 2;
 }
 message GetBlockHeaderInfoResponse {
   BlockHeaderInfo header_info = 1;
+  // Ancestors MUST be sorted newest-first
+  repeated BlockHeaderInfo ancestor_infos = 2;
 }
 
 message GetBlockInfoRequest {
@@ -122,13 +130,21 @@ message GetBlockInfoResponse {
 message GetBmmHStarCommitmentRequest {
   cusf.common.v1.ReverseHex block_hash = 1;
   google.protobuf.UInt32Value sidechain_id = 2;
+  // Request commitments for up to `max_ancestors` ancestors.
+  // Fewer ancestors MAY be returned.
+  optional uint32 max_ancestors = 3;
 }
 message GetBmmHStarCommitmentResponse {
   message BlockNotFoundError {
     cusf.common.v1.ReverseHex block_hash = 1;
   }
+  message OptionalCommitment {
+    optional cusf.common.v1.ConsensusHex commitment = 1;
+  }
   message Commitment {
     optional cusf.common.v1.ConsensusHex commitment = 1;
+    // Ancestors MUST be sorted newest-first
+    repeated OptionalCommitment ancestor_commitments = 2;
   }
   oneof result {
     BlockNotFoundError block_not_found = 1;
