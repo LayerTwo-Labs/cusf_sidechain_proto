@@ -78,8 +78,9 @@ service ValidatorService {
   rpc GetBlockHeaderInfo(GetBlockHeaderInfoRequest)
     returns (GetBlockHeaderInfoResponse);
 
-  // Fetches information about a specific mainchain block, and how it pertains
-  // to events happening on a specific sidechain. 
+  // Fetches information about a specific mainchain block (and optionally,
+  // it's ancestors), regarding how it pertains to events happening on a
+  // specific sidechain.
   rpc GetBlockInfo(GetBlockInfoRequest) returns (GetBlockInfoResponse);
   // Fetches BMM h* commitment for a specific mainchain block,
   // and optionally, it's ancestors
@@ -114,17 +115,25 @@ message GetBlockInfoRequest {
   // The block to fetch information about.
   cusf.common.v1.ReverseHex block_hash = 1;
 
-  // The sidechain to filter for events relating to. 
+  // The sidechain to filter for events relating to.
   google.protobuf.UInt32Value sidechain_id = 2;
+
+  // Request block info for up to `max_ancestors` ancestors.
+  // Fewer ancestors MAY be returned.
+  optional uint32 max_ancestors = 3;
 }
 
 message GetBlockInfoResponse {
-  // Information about the block itself.
-  BlockHeaderInfo header_info = 1;
-
-  // Information about the block, filtered for events relating to 
-  // a specific sidechain.
-  BlockInfo block_info = 2;
+  message Info {
+    // Information about the block itself.
+    BlockHeaderInfo header_info = 1;
+    // Information about the block, filtered for events relating to a specific
+    // sidechain.
+    BlockInfo block_info = 2;
+  }
+  Info info = 1;
+  // Ancestors MUST be sorted newest-first
+  repeated Info ancestor_infos = 2;
 }
 
 message GetBmmHStarCommitmentRequest {
