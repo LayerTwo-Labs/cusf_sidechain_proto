@@ -102,15 +102,6 @@ service ValidatorService {
     returns (stream SubscribeHeaderSyncResponse);
 }
 
-message SubscribeHeaderSyncRequest {
-  // Empty for now, could add filters later
-}
-
-message SubscribeHeaderSyncResponse {
-  google.protobuf.UInt32Value current_height = 1;
-  google.protobuf.UInt32Value target_height = 2;
-}
-
 message GetBlockHeaderInfoRequest {
   cusf.common.v1.ReverseHex block_hash = 1;
   // Request block header info for up to `max_ancestors` ancestors.
@@ -263,6 +254,15 @@ message GetSidechainsResponse {
     optional SidechainDeclaration declaration = 6;
   }
   repeated SidechainInfo sidechains = 1;
+}
+
+message SubscribeHeaderSyncRequest {
+  // Empty for now, could add filters later
+}
+
+message SubscribeHeaderSyncResponse {
+  google.protobuf.UInt32Value current_height = 1;
+  google.protobuf.UInt32Value target_height = 2;
 }
 
 message GetTwoWayPegDataRequest {
