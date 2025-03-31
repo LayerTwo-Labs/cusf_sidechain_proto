@@ -96,6 +96,10 @@ service ValidatorService {
     returns (GetTwoWayPegDataResponse);
   rpc SubscribeEvents(SubscribeEventsRequest)
     returns (stream SubscribeEventsResponse);
+    
+  // Stream header sync progress updates
+  rpc SubscribeHeaderSync(SubscribeHeaderSyncRequest)
+    returns (stream SubscribeHeaderSyncResponse);
 }
 
 message GetBlockHeaderInfoRequest {
@@ -283,4 +287,13 @@ message SubscribeEventsResponse {
     }
   }
   Event event = 1;
+}
+
+message SubscribeHeaderSyncRequest {
+  // Empty for now, could add filters later
+}
+
+message SubscribeHeaderSyncResponse {
+  google.protobuf.UInt32Value current_height = 1;
+  google.protobuf.UInt32Value target_height = 2;
 }
