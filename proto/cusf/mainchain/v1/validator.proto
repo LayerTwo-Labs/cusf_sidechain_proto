@@ -256,15 +256,6 @@ message GetSidechainsResponse {
   repeated SidechainInfo sidechains = 1;
 }
 
-message SubscribeHeaderSyncRequest {
-  // Empty for now, could add filters later
-}
-
-message SubscribeHeaderSyncResponse {
-  google.protobuf.UInt32Value current_height = 1;
-  google.protobuf.UInt32Value target_height = 2;
-}
-
 message GetTwoWayPegDataRequest {
   google.protobuf.UInt32Value sidechain_id = 1;
   optional cusf.common.v1.ReverseHex start_block_hash = 2;
@@ -296,4 +287,13 @@ message SubscribeEventsResponse {
     }
   }
   Event event = 1;
+}
+
+message SubscribeHeaderSyncRequest {
+  // Empty for now, could add filters later
+}
+
+message SubscribeHeaderSyncResponse {
+  google.protobuf.UInt32Value current_height = 1;
+  google.protobuf.UInt32Value target_height = 2;
 }
