@@ -294,6 +294,6 @@ message SubscribeHeaderSyncRequest {
 }
 
 message SubscribeHeaderSyncResponse {
-  google.protobuf.UInt32Value current_height = 1;
-  google.protobuf.UInt32Value target_height = 2;
+  uint32 current_height = 1;
+  uint32 target_height = 2;
 }
