@@ -98,7 +98,7 @@ service ValidatorService {
     returns (stream SubscribeEventsResponse);
     
   // Stream header sync progress updates
-  rpc SubscribeHeaderSync(SubscribeHeaderSyncRequest)
+  rpc SubscribeHeaderSyncProgress(SubscribeHeaderSyncRequest)
     returns (stream SubscribeHeaderSyncResponse);
 }
 
