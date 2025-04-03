@@ -98,8 +98,8 @@ service ValidatorService {
     returns (stream SubscribeEventsResponse);
     
   // Stream header sync progress updates
-  rpc SubscribeHeaderSyncProgress(SubscribeHeaderSyncRequest)
-    returns (stream SubscribeHeaderSyncResponse);
+  rpc SubscribeHeaderSyncProgress(SubscribeHeaderSyncProgressRequest)
+    returns (stream SubscribeHeaderSyncProgressResponse);
 }
 
 message GetBlockHeaderInfoRequest {
@@ -289,11 +289,11 @@ message SubscribeEventsResponse {
   Event event = 1;
 }
 
-message SubscribeHeaderSyncRequest {
+message SubscribeHeaderSyncProgressRequest {
   // Empty for now, could add filters later
 }
 
-message SubscribeHeaderSyncResponse {
+message SubscribeHeaderSyncProgressResponse {
   uint32 current_height = 1;
   uint32 target_height = 2;
 }
