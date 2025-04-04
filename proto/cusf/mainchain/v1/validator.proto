@@ -98,8 +98,8 @@ service ValidatorService {
     returns (stream SubscribeEventsResponse);
     
   // Stream header sync progress updates
-  rpc SubscribeHeaderSync(SubscribeHeaderSyncRequest)
-    returns (stream SubscribeHeaderSyncResponse);
+  rpc SubscribeHeaderSyncProgress(SubscribeHeaderSyncProgressRequest)
+    returns (stream SubscribeHeaderSyncProgressResponse);
 }
 
 message GetBlockHeaderInfoRequest {
@@ -289,11 +289,11 @@ message SubscribeEventsResponse {
   Event event = 1;
 }
 
-message SubscribeHeaderSyncRequest {
+message SubscribeHeaderSyncProgressRequest {
   // Empty for now, could add filters later
 }
 
-message SubscribeHeaderSyncResponse {
+message SubscribeHeaderSyncProgressResponse {
   google.protobuf.UInt32Value current_height = 1;
   google.protobuf.UInt32Value target_height = 2;
 }
