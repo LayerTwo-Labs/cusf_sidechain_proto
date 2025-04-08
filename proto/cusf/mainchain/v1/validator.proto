@@ -294,6 +294,6 @@ message SubscribeHeaderSyncProgressRequest {
 }
 
 message SubscribeHeaderSyncProgressResponse {
-  google.protobuf.UInt32Value current_height = 1;
-  google.protobuf.UInt32Value target_height = 2;
+  // Current sync height may be unknown at the start of a sync
+  optional google.protobuf.UInt32Value current_height = 1;
 }
