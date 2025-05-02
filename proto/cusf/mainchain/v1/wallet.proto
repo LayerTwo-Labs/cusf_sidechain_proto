@@ -261,6 +261,10 @@ message ListUnspentOutputsResponse {
     google.protobuf.Timestamp confirmed_at_time = 7;
     cusf.common.v1.ReverseHex confirmed_transitively = 8;
     google.protobuf.Timestamp unconfirmed_last_seen = 9;
+
+    // The address corresponding to this output. Empty if we're unable 
+    // to represent it as an output. 
+    optional string address = 10;
   }
 
 
