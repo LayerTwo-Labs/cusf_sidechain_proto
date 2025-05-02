@@ -263,8 +263,8 @@ message ListUnspentOutputsResponse {
     google.protobuf.Timestamp unconfirmed_last_seen = 9;
 
     // The address corresponding to this output. Empty if we're unable 
-    // to represent it as an output. 
-    optional string address = 10;
+    // to represent it as an address. 
+    google.protobuf.StringValue address = 10;
   }
 
 
