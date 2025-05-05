@@ -101,6 +101,11 @@ service ValidatorService {
   // Stream header sync progress updates
   rpc SubscribeHeaderSyncProgress(SubscribeHeaderSyncProgressRequest)
     returns (stream SubscribeHeaderSyncProgressResponse);
+  
+  // Safely shutdown the validator. This is equivalent to sending a SIGINT
+  // to the validator process, and can be used to trigger a graceful shutdown
+  // in cases where you don't have access to the validator process.
+  rpc Stop(StopRequest) returns (StopResponse);
 }
 
 message GetBlockHeaderInfoRequest {
@@ -305,4 +310,9 @@ message SubscribeHeaderSyncProgressRequest {
 message SubscribeHeaderSyncProgressResponse {
   // Current sync height may be unknown at the start of a sync
   optional google.protobuf.UInt32Value current_height = 1;
+}
+
+message StopRequest {
+}
+message StopResponse {
 }
