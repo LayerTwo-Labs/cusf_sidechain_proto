@@ -241,6 +241,18 @@ message GetInfoResponse {
   uint32 unspent_output_count = 3;
 
   map<string, string> descriptors = 4;
+
+
+  message Tip {
+    // The height of the tip of the wallet.
+    uint32 height = 1;
+
+    // The hash of the tip of the wallet.
+    cusf.common.v1.ReverseHex hash = 2;
+  }
+  
+  // The chain tip the wallet is synced to. 
+  Tip tip = 5;
 }
 
 message ListUnspentOutputsRequest {
