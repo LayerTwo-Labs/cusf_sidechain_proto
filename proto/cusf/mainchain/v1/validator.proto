@@ -115,9 +115,7 @@ message GetBlockHeaderInfoRequest {
   optional uint32 max_ancestors = 2;
 }
 message GetBlockHeaderInfoResponse {
-  BlockHeaderInfo header_info = 1;
-  // Ancestors MUST be sorted newest-first
-  repeated BlockHeaderInfo ancestor_infos = 2;
+  repeated BlockHeaderInfo header_infos = 1;
 }
 
 message GetBlockInfoRequest {
@@ -140,9 +138,9 @@ message GetBlockInfoResponse {
     // sidechain.
     BlockInfo block_info = 2;
   }
-  Info info = 1;
-  // Ancestors MUST be sorted newest-first
-  repeated Info ancestor_infos = 2;
+  // Empty if the requested block was not found.
+  // Ancestors MUST be sorted newest-first.
+  repeated Info infos = 1;
 }
 
 message GetBmmHStarCommitmentRequest {
