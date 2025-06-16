@@ -150,6 +150,9 @@ message GetBalanceRequest {
 message GetBalanceResponse {
   uint64 confirmed_sats = 1;
   uint64 pending_sats = 2;
+
+  // Whether the wallet has completed its initial sync.
+  bool has_synced = 3;
 }
 
 message ListSidechainDepositTransactionsRequest {
