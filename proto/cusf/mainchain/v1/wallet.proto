@@ -17,6 +17,7 @@ message WalletTransaction {
   }
 
   cusf.common.v1.ReverseHex txid = 1;
+  cusf.common.v1.ConsensusHex raw_transaction = 6;
 
   uint64 fee_sats = 2;
   uint64 received_sats = 3;
