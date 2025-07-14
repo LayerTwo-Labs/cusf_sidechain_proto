@@ -14,6 +14,8 @@ message BlockHeaderInfo {
   uint32 height = 3;
   // Total work as a uint256, little-endian
   cusf.common.v1.ConsensusHex work = 4;
+  // Unix timestamp (seconds since epoch)
+  uint64 timestamp = 5;
 }
 
 enum Network {
