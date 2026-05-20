@@ -14,37 +14,29 @@ message BlockHeaderInfo {
   uint32 height = 4;
 }
 
-message BlockInfo {
-}
+message BlockInfo {}
 
 service SidechainService {
   rpc GetMempoolTxs(GetMempoolTxsRequest) returns (GetMempoolTxsResponse);
   rpc GetUtxos(GetUtxosRequest) returns (GetUtxosResponse);
-  rpc SubmitTransaction(SubmitTransactionRequest)
-    returns (SubmitTransactionResponse);
-  rpc SubscribeEvents(SubscribeEventsRequest)
-    returns (stream SubscribeEventsResponse);
+  rpc SubmitTransaction(SubmitTransactionRequest) returns (SubmitTransactionResponse);
+  rpc SubscribeEvents(SubscribeEventsRequest) returns (stream SubscribeEventsResponse);
 }
 
-message GetMempoolTxsRequest {
-}
+message GetMempoolTxsRequest {}
 message GetMempoolTxsResponse {
   SequenceId sequence_id = 1;
 }
 
-message GetUtxosRequest {
-}
-message GetUtxosResponse {
-}
+message GetUtxosRequest {}
+message GetUtxosResponse {}
 
 message SubmitTransactionRequest {
   bytes transaction = 1;
 }
-message SubmitTransactionResponse {
-}
+message SubmitTransactionResponse {}
 
-message SubscribeEventsRequest {
-}
+message SubscribeEventsRequest {}
 message SubscribeEventsResponse {
   message Event {
     message ConnectBlock {

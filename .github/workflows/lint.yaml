@@ -8,16 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: run protolint
-        uses: plexsystems/protolint-action@v0.7.0
-        with:
-          configDirectory: .
-          srcDirectory: proto
 
       - name: Install buf
         uses: bufbuild/buf-action@v1
         with:
           setup_only: true
-      
+
       - name: Buf lint
         run: buf lint --error-format github-actions
+
+      - name: Buf format
+        run: buf format --diff --exit-code
