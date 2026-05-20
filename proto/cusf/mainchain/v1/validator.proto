@@ -3,10 +3,9 @@
 syntax = "proto3";
 package cusf.mainchain.v1;
 
-import "google/protobuf/wrappers.proto";
-
 import "cusf/common/v1/common.proto";
 import "cusf/mainchain/v1/common.proto";
+import "google/protobuf/wrappers.proto";
 
 message BlockHeaderInfo {
   cusf.common.v1.ReverseHex block_hash = 1;
@@ -40,14 +39,12 @@ message Deposit {
 
 message WithdrawalBundleEvent {
   message Event {
-    message Failed {
-    }
+    message Failed {}
     message Succeeded {
       google.protobuf.UInt64Value sequence_number = 1;
       cusf.common.v1.ConsensusHex transaction = 2;
     }
-    message Submitted {
-    }
+    message Submitted {}
     oneof event {
       Failed failed = 1;
       Succeeded succeeded = 2;
@@ -77,8 +74,7 @@ message BlockInfo {
 service ValidatorService {
   // Fetches information about a specific mainchain block header,
   // and optionally, it's ancestors
-  rpc GetBlockHeaderInfo(GetBlockHeaderInfoRequest)
-    returns (GetBlockHeaderInfoResponse);
+  rpc GetBlockHeaderInfo(GetBlockHeaderInfoRequest) returns (GetBlockHeaderInfoResponse);
 
   // Fetches information about a specific mainchain block (and optionally,
   // it's ancestors), regarding how it pertains to events happening on a
@@ -86,24 +82,19 @@ service ValidatorService {
   rpc GetBlockInfo(GetBlockInfoRequest) returns (GetBlockInfoResponse);
   // Fetches BMM h* commitment for a specific mainchain block,
   // and optionally, it's ancestors
-  rpc GetBmmHStarCommitment(GetBmmHStarCommitmentRequest)
-    returns (GetBmmHStarCommitmentResponse);
+  rpc GetBmmHStarCommitment(GetBmmHStarCommitmentRequest) returns (GetBmmHStarCommitmentResponse);
   rpc GetChainInfo(GetChainInfoRequest) returns (GetChainInfoResponse);
   rpc GetChainTip(GetChainTipRequest) returns (GetChainTipResponse);
   rpc GetCoinbasePSBT(GetCoinbasePSBTRequest) returns (GetCoinbasePSBTResponse);
   rpc GetCtip(GetCtipRequest) returns (GetCtipResponse);
-  rpc GetSidechainProposals(GetSidechainProposalsRequest)
-      returns (GetSidechainProposalsResponse);
+  rpc GetSidechainProposals(GetSidechainProposalsRequest) returns (GetSidechainProposalsResponse);
   rpc GetSidechains(GetSidechainsRequest) returns (GetSidechainsResponse);
-  rpc GetTwoWayPegData(GetTwoWayPegDataRequest)
-    returns (GetTwoWayPegDataResponse);
-  rpc SubscribeEvents(SubscribeEventsRequest)
-    returns (stream SubscribeEventsResponse);
-    
+  rpc GetTwoWayPegData(GetTwoWayPegDataRequest) returns (GetTwoWayPegDataResponse);
+  rpc SubscribeEvents(SubscribeEventsRequest) returns (stream SubscribeEventsResponse);
+
   // Stream header sync progress updates
-  rpc SubscribeHeaderSyncProgress(SubscribeHeaderSyncProgressRequest)
-    returns (stream SubscribeHeaderSyncProgressResponse);
-  
+  rpc SubscribeHeaderSyncProgress(SubscribeHeaderSyncProgressRequest) returns (stream SubscribeHeaderSyncProgressResponse);
+
   // Safely shutdown the validator. This is equivalent to sending a SIGINT
   // to the validator process, and can be used to trigger a graceful shutdown
   // in cases where you don't have access to the validator process.
@@ -170,14 +161,12 @@ message GetBmmHStarCommitmentResponse {
   }
 }
 
-message GetChainInfoRequest {
-}
+message GetChainInfoRequest {}
 message GetChainInfoResponse {
   Network network = 1;
 }
 
-message GetChainTipRequest {
-}
+message GetChainTipRequest {}
 message GetChainTipResponse {
   BlockHeaderInfo block_header_info = 1;
 }
@@ -196,10 +185,8 @@ message GetCoinbasePSBTRequest {
     cusf.common.v1.ReverseHex bundle_txid = 2;
   }
   message AckBundles {
-    message RepeatPrevious {
-    }
-    message LeadingBy50 {
-    }
+    message RepeatPrevious {}
+    message LeadingBy50 {}
     message Upvotes {
       repeated uint32 upvotes = 1;
     }
@@ -232,8 +219,7 @@ message GetCtipResponse {
   optional Ctip ctip = 1;
 }
 
-message GetSidechainProposalsRequest {
-}
+message GetSidechainProposalsRequest {}
 message GetSidechainProposalsResponse {
   message SidechainProposal {
     google.protobuf.UInt32Value sidechain_number = 1;
@@ -253,8 +239,7 @@ message GetSidechainProposalsResponse {
   repeated SidechainProposal sidechain_proposals = 1;
 }
 
-message GetSidechainsRequest {
-}
+message GetSidechainsRequest {}
 message GetSidechainsResponse {
   message SidechainInfo {
     google.protobuf.UInt32Value sidechain_number = 1;
@@ -312,7 +297,5 @@ message SubscribeHeaderSyncProgressResponse {
   optional google.protobuf.UInt32Value current_height = 1;
 }
 
-message StopRequest {
-}
-message StopResponse {
-}
+message StopRequest {}
+message StopResponse {}

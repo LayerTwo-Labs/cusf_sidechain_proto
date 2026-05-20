@@ -3,9 +3,8 @@
 syntax = "proto3";
 package cusf.mainchain.v1;
 
-import "google/protobuf/wrappers.proto";
-
 import "cusf/common/v1/common.proto";
+import "google/protobuf/wrappers.proto";
 
 message OutPoint {
   cusf.common.v1.ReverseHex txid = 1;
