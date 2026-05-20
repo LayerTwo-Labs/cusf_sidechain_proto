@@ -17,10 +17,18 @@ message BlockHeaderInfo {
 message BlockInfo {}
 
 service SidechainService {
-  rpc GetMempoolTxs(GetMempoolTxsRequest) returns (GetMempoolTxsResponse);
-  rpc GetUtxos(GetUtxosRequest) returns (GetUtxosResponse);
-  rpc SubmitTransaction(SubmitTransactionRequest) returns (SubmitTransactionResponse);
-  rpc SubscribeEvents(SubscribeEventsRequest) returns (stream SubscribeEventsResponse);
+  rpc GetMempoolTxs(GetMempoolTxsRequest) returns (GetMempoolTxsResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc GetUtxos(GetUtxosRequest) returns (GetUtxosResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc SubmitTransaction(SubmitTransactionRequest) returns (SubmitTransactionResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
+  rpc SubscribeEvents(SubscribeEventsRequest) returns (stream SubscribeEventsResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
 }
 
 message GetMempoolTxsRequest {}
