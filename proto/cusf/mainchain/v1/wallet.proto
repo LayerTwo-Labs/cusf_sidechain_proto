@@ -26,7 +26,9 @@ message WalletTransaction {
 }
 
 service WalletService {
-  rpc BroadcastWithdrawalBundle(BroadcastWithdrawalBundleRequest) returns (BroadcastWithdrawalBundleResponse);
+  rpc BroadcastWithdrawalBundle(BroadcastWithdrawalBundleRequest) returns (BroadcastWithdrawalBundleResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
   rpc CreateBmmCriticalDataTransaction(CreateBmmCriticalDataTransactionRequest) returns (CreateBmmCriticalDataTransactionResponse);
   rpc CreateDepositTransaction(CreateDepositTransactionRequest) returns (CreateDepositTransactionResponse);
   rpc CreateNewAddress(CreateNewAddressRequest) returns (CreateNewAddressResponse);
@@ -38,13 +40,25 @@ service WalletService {
   // Returns a stream of (non-)confirmation events for the sidechain proposal.
   rpc CreateSidechainProposal(CreateSidechainProposalRequest) returns (stream CreateSidechainProposalResponse);
   rpc CreateWallet(CreateWalletRequest) returns (CreateWalletResponse);
-  rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse);
-  rpc ListSidechainDepositTransactions(ListSidechainDepositTransactionsRequest) returns (ListSidechainDepositTransactionsResponse);
-  rpc ListTransactions(ListTransactionsRequest) returns (ListTransactionsResponse);
-  rpc ListUnspentOutputs(ListUnspentOutputsRequest) returns (ListUnspentOutputsResponse);
-  rpc GetInfo(GetInfoRequest) returns (GetInfoResponse);
+  rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc ListSidechainDepositTransactions(ListSidechainDepositTransactionsRequest) returns (ListSidechainDepositTransactionsResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc ListTransactions(ListTransactionsRequest) returns (ListTransactionsResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc ListUnspentOutputs(ListUnspentOutputsRequest) returns (ListUnspentOutputsResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc GetInfo(GetInfoRequest) returns (GetInfoResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
   rpc SendTransaction(SendTransactionRequest) returns (SendTransactionResponse);
-  rpc UnlockWallet(UnlockWalletRequest) returns (UnlockWalletResponse);
+  rpc UnlockWallet(UnlockWalletRequest) returns (UnlockWalletResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
   // Available on regtest and signet only.
   rpc GenerateBlocks(GenerateBlocksRequest) returns (stream GenerateBlocksResponse);
 }

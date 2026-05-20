@@ -74,31 +74,57 @@ message BlockInfo {
 service ValidatorService {
   // Fetches information about a specific mainchain block header,
   // and optionally, it's ancestors
-  rpc GetBlockHeaderInfo(GetBlockHeaderInfoRequest) returns (GetBlockHeaderInfoResponse);
+  rpc GetBlockHeaderInfo(GetBlockHeaderInfoRequest) returns (GetBlockHeaderInfoResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
 
   // Fetches information about a specific mainchain block (and optionally,
   // it's ancestors), regarding how it pertains to events happening on a
   // specific sidechain.
-  rpc GetBlockInfo(GetBlockInfoRequest) returns (GetBlockInfoResponse);
+  rpc GetBlockInfo(GetBlockInfoRequest) returns (GetBlockInfoResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
   // Fetches BMM h* commitment for a specific mainchain block,
   // and optionally, it's ancestors
-  rpc GetBmmHStarCommitment(GetBmmHStarCommitmentRequest) returns (GetBmmHStarCommitmentResponse);
-  rpc GetChainInfo(GetChainInfoRequest) returns (GetChainInfoResponse);
-  rpc GetChainTip(GetChainTipRequest) returns (GetChainTipResponse);
-  rpc GetCoinbasePSBT(GetCoinbasePSBTRequest) returns (GetCoinbasePSBTResponse);
-  rpc GetCtip(GetCtipRequest) returns (GetCtipResponse);
-  rpc GetSidechainProposals(GetSidechainProposalsRequest) returns (GetSidechainProposalsResponse);
-  rpc GetSidechains(GetSidechainsRequest) returns (GetSidechainsResponse);
-  rpc GetTwoWayPegData(GetTwoWayPegDataRequest) returns (GetTwoWayPegDataResponse);
-  rpc SubscribeEvents(SubscribeEventsRequest) returns (stream SubscribeEventsResponse);
+  rpc GetBmmHStarCommitment(GetBmmHStarCommitmentRequest) returns (GetBmmHStarCommitmentResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc GetChainInfo(GetChainInfoRequest) returns (GetChainInfoResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc GetChainTip(GetChainTipRequest) returns (GetChainTipResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc GetCoinbasePSBT(GetCoinbasePSBTRequest) returns (GetCoinbasePSBTResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc GetCtip(GetCtipRequest) returns (GetCtipResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc GetSidechainProposals(GetSidechainProposalsRequest) returns (GetSidechainProposalsResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc GetSidechains(GetSidechainsRequest) returns (GetSidechainsResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc GetTwoWayPegData(GetTwoWayPegDataRequest) returns (GetTwoWayPegDataResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc SubscribeEvents(SubscribeEventsRequest) returns (stream SubscribeEventsResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
 
   // Stream header sync progress updates
-  rpc SubscribeHeaderSyncProgress(SubscribeHeaderSyncProgressRequest) returns (stream SubscribeHeaderSyncProgressResponse);
+  rpc SubscribeHeaderSyncProgress(SubscribeHeaderSyncProgressRequest) returns (stream SubscribeHeaderSyncProgressResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
 
   // Safely shutdown the validator. This is equivalent to sending a SIGINT
   // to the validator process, and can be used to trigger a graceful shutdown
   // in cases where you don't have access to the validator process.
-  rpc Stop(StopRequest) returns (StopResponse);
+  rpc Stop(StopRequest) returns (StopResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
 }
 
 message GetBlockHeaderInfoRequest {
