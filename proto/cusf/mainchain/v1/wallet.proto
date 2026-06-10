@@ -39,6 +39,10 @@ service WalletService {
   // been able to generate a new block.
   // Returns a stream of (non-)confirmation events for the sidechain proposal.
   rpc CreateSidechainProposal(CreateSidechainProposalRequest) returns (stream CreateSidechainProposalResponse);
+  // Unary variant of `CreateSidechainProposal`. Creates a new sidechain
+  // proposal (M1 in BIP300) and persists it to the local database for further
+  // processing, returning immediately once the proposal has been created.
+  rpc SubmitSidechainProposal(SubmitSidechainProposalRequest) returns (SubmitSidechainProposalResponse);
   rpc CreateWallet(CreateWalletRequest) returns (CreateWalletResponse);
   rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse) {
     option idempotency_level = NO_SIDE_EFFECTS;
@@ -128,6 +132,12 @@ message CreateSidechainProposalResponse {
     NotConfirmed not_confirmed = 2;
   }
 }
+
+message SubmitSidechainProposalRequest {
+  google.protobuf.UInt32Value sidechain_id = 1;
+  SidechainDeclaration declaration = 2;
+}
+message SubmitSidechainProposalResponse {}
 
 message CreateWalletRequest {
   // BIP39 mnemonic. 12 or 24 words.
