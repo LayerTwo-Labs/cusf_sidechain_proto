@@ -101,6 +101,11 @@ service ValidatorService {
   rpc GetCtip(GetCtipRequest) returns (GetCtipResponse) {
     option idempotency_level = NO_SIDE_EFFECTS;
   }
+  // Fetches the Ctip for every active sidechain that has one, in a single
+  // request. Avoids calling GetCtip once per sidechain.
+  rpc GetCtips(GetCtipsRequest) returns (GetCtipsResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
   rpc GetSidechainProposals(GetSidechainProposalsRequest) returns (GetSidechainProposalsResponse) {
     option idempotency_level = NO_SIDE_EFFECTS;
   }
@@ -272,6 +277,19 @@ message GetCtipResponse {
     uint64 sequence_number = 4;
   }
   optional Ctip ctip = 1;
+}
+
+message GetCtipsRequest {}
+message GetCtipsResponse {
+  message Ctip {
+    google.protobuf.UInt32Value sidechain_number = 1;
+    cusf.common.v1.ReverseHex txid = 2;
+    uint32 vout = 3;
+    uint64 value = 4;
+    uint64 sequence_number = 5;
+  }
+  // One entry per active sidechain that has a Ctip.
+  repeated Ctip ctips = 1;
 }
 
 message GetSidechainProposalsRequest {}
